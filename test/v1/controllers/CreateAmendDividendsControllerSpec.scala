@@ -16,18 +16,18 @@
 
 package v1.controllers
 
-import api.controllers.{ControllerBaseSpec, ControllerTestRunner}
-import api.mocks.MockIdGenerator
-import api.mocks.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService}
-import api.models.audit.{AuditEvent, AuditResponse, GenericAuditDetail}
-import api.models.domain.{Nino, TaxYear}
-import api.models.errors._
-import api.models.outcomes.ResponseWrapper
 import mocks.MockAppConfig
 import play.api.libs.json.{JsValue, Json}
-import play.api.mvc.{AnyContentAsJson, Result}
-import v1.mocks.requestParsers.MockCreateAmendDividendsRequestParser
+import play.api.mvc.Result
+import shared.controllers.{ControllerBaseSpec, ControllerTestRunner}
+import shared.models.audit.{AuditEvent, AuditResponse, GenericAuditDetail}
+import shared.models.domain.{Nino, TaxYear}
+import shared.models.errors._
+import shared.models.outcomes.ResponseWrapper
+import shared.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService}
+import shared.utils.MockIdGenerator
 import v1.mocks.services.MockCreateAmendDividendsService
+import v1.mocks.validators.MockCreateAmendDividendsValidatorFactory
 import v1.models.request.createAmendDividends._
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -41,7 +41,7 @@ class CreateAmendDividendsControllerSpec
     with MockAppConfig
     with MockAuditService
     with MockCreateAmendDividendsService
-    with MockCreateAmendDividendsRequestParser
+    with MockCreateAmendDividendsValidatorFactory
     with MockIdGenerator {
 
   val taxYear: String = "2019-20"
@@ -103,12 +103,6 @@ class CreateAmendDividendsControllerSpec
       |   }
       |}
     """.stripMargin
-  )
-
-  val rawData: CreateAmendDividendsRawData = CreateAmendDividendsRawData(
-    nino = nino,
-    taxYear = taxYear,
-    body = AnyContentAsJson(validRequestJson)
   )
 
   val foreignDividend: List[CreateAmendForeignDividendItem] = List(
@@ -189,9 +183,7 @@ class CreateAmendDividendsControllerSpec
       "happy path" in new Test {
         MockedAppConfig.apiGatewayContext.returns("individuals/dividends-income").anyNumberOfTimes()
 
-        MockCreateAmendDividendsRequestParser
-          .parse(rawData)
-          .returns(Right(requestData))
+        willUseValidator(returningSuccess(requestData))
 
         MockCreateAmendDividendsService
           .createAmendDividends(requestData)
@@ -207,17 +199,13 @@ class CreateAmendDividendsControllerSpec
 
     "return the error as per spec" when {
       "the parser validation fails" in new Test {
-        MockCreateAmendDividendsRequestParser
-          .parse(rawData)
-          .returns(Left(ErrorWrapper(correlationId, NinoFormatError)))
+        willUseValidator(returning(NinoFormatError))
 
         runErrorTestWithAudit(NinoFormatError, maybeAuditRequestBody = Some(validRequestJson))
       }
 
       "service returns an error" in new Test {
-        MockCreateAmendDividendsRequestParser
-          .parse(rawData)
-          .returns(Right(requestData))
+        willUseValidator(returningSuccess(requestData))
 
         MockCreateAmendDividendsService
           .createAmendDividends(requestData)
@@ -233,7 +221,7 @@ class CreateAmendDividendsControllerSpec
     val controller = new CreateAmendDividendsController(
       authService = mockEnrolmentsAuthService,
       lookupService = mockMtdIdLookupService,
-      parser = mockCreateAmendDividendsRequestParser,
+      validatorFactory = mockCreateAmendDividendsValidatorFactory,
       service = mockCreateAmendDividendsService,
       auditService = mockAuditService,
       cc = cc,

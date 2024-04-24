@@ -16,10 +16,10 @@
 
 package v1.models.response.retrieveDividends
 
-import api.models.domain.Timestamp
+import shared.models.domain.Timestamp
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsPath, Json, OWrites, Reads}
-import utils.JsonUtils
+import shared.utils.JsonUtils
 
 case class RetrieveDividendsResponse(submittedOn: Timestamp,
                                      foreignDividend: Option[Seq[ForeignDividendItem]],

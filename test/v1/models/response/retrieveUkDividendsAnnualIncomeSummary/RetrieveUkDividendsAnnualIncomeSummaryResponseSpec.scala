@@ -18,7 +18,7 @@ package v1.models.response.retrieveUkDividendsAnnualIncomeSummary
 
 import mocks.MockAppConfig
 import play.api.libs.json.Json
-import support.UnitSpec
+import shared.UnitSpec
 
 class RetrieveUkDividendsAnnualIncomeSummaryResponseSpec extends UnitSpec with MockAppConfig with RetrieveUkDividendsAnnualIncomeSummaryFixture {
 

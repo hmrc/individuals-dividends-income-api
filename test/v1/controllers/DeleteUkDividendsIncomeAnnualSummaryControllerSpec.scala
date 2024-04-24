@@ -16,18 +16,18 @@
 
 package v1.controllers
 
-import api.controllers.{ControllerBaseSpec, ControllerTestRunner}
-import api.models.audit.{AuditEvent, AuditResponse, FlattenedGenericAuditDetail}
-import api.models.auth.UserDetails
-import api.models.domain.{Nino, TaxYear}
-import api.models.errors._
-import api.models.outcomes.ResponseWrapper
+import shared.controllers.{ControllerBaseSpec, ControllerTestRunner}
+import shared.models.audit.{AuditEvent, AuditResponse, FlattenedGenericAuditDetail}
+import shared.models.auth.UserDetails
+import shared.models.domain.{Nino, TaxYear}
+import shared.models.errors._
+import shared.models.outcomes.ResponseWrapper
 import mocks.MockAppConfig
 import play.api.libs.json.JsValue
 import play.api.mvc.Result
-import v1.mocks.requestParsers.MockDeleteUkDividendsIncomeAnnualSummaryRequestParser
 import v1.mocks.services.MockDeleteUkDividendsIncomeAnnualSummaryService
-import v1.models.request.deleteUkDividendsIncomeAnnualSummary.{DeleteUkDividendsIncomeAnnualSummaryRawData, DeleteUkDividendsIncomeAnnualSummaryRequest}
+import v1.mocks.validators.MockDeleteUkDividendsIncomeAnnualSummaryValidatorFactory
+import v1.models.request.deleteUkDividendsIncomeAnnualSummary.DeleteUkDividendsIncomeAnnualSummaryRequest
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -36,16 +36,11 @@ class DeleteUkDividendsIncomeAnnualSummaryControllerSpec
   extends ControllerBaseSpec
     with ControllerTestRunner
     with MockDeleteUkDividendsIncomeAnnualSummaryService
-    with MockDeleteUkDividendsIncomeAnnualSummaryRequestParser
+    with MockDeleteUkDividendsIncomeAnnualSummaryValidatorFactory
     with MockAppConfig{
 
   private val taxYear = "2017-18"
   private val mtdId   = "test-mtd-id"
-
-  private val rawData: DeleteUkDividendsIncomeAnnualSummaryRawData = DeleteUkDividendsIncomeAnnualSummaryRawData(
-    nino = nino,
-    taxYear = taxYear
-  )
 
   private val requestData: DeleteUkDividendsIncomeAnnualSummaryRequest = DeleteUkDividendsIncomeAnnualSummaryRequest(
     nino = Nino(nino),
@@ -55,9 +50,7 @@ class DeleteUkDividendsIncomeAnnualSummaryControllerSpec
   "DeleteDividendsController" should {
     "return a successful response with status 204 (No Content)" when {
       "a valid request is supplied" in new Test {
-        MockDeleteUkDividendsIncomeAnnualSummaryRequestParser
-          .parse(rawData)
-          .returns(Right(requestData))
+        willUseValidator(returningSuccess(requestData))
 
         MockDeleteUkDividendsIncomeAnnualSummaryService
           .delete(requestData)
@@ -69,17 +62,13 @@ class DeleteUkDividendsIncomeAnnualSummaryControllerSpec
 
     "return the error as per spec" when {
       "the parser validation fails" in new Test {
-        MockDeleteUkDividendsIncomeAnnualSummaryRequestParser
-          .parse(rawData)
-          .returns(Left(ErrorWrapper(correlationId, NinoFormatError)))
+        willUseValidator(returning(NinoFormatError))
 
         runErrorTest(NinoFormatError)
       }
 
       "service returns an error" in new Test {
-        MockDeleteUkDividendsIncomeAnnualSummaryRequestParser
-          .parse(rawData)
-          .returns(Right(requestData))
+        willUseValidator(returningSuccess(requestData))
 
         MockDeleteUkDividendsIncomeAnnualSummaryService
           .delete(requestData)
@@ -95,7 +84,7 @@ class DeleteUkDividendsIncomeAnnualSummaryControllerSpec
     val controller = new DeleteUkDividendsIncomeAnnualSummaryController(
       authService = mockEnrolmentsAuthService,
       lookupService = mockMtdIdLookupService,
-      parser = mockDeleteUkDividendsIncomeAnnualSummaryRequestParser,
+      validatorFactory = mockDeleteDividendsIncomeAnnualSummaryValidatorFactory,
       service = mockDeleteUkDividendsIncomeAnnualSummaryService,
       auditService = mockAuditService,
       cc = cc,

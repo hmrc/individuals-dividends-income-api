@@ -16,19 +16,19 @@
 
 package v1.controllers
 
-import api.controllers.{ControllerBaseSpec, ControllerTestRunner}
-import api.mocks.MockIdGenerator
-import api.mocks.services.{MockEnrolmentsAuthService, MockMtdIdLookupService}
-import api.models.domain.{Nino, TaxYear}
-import api.models.errors._
-import api.models.outcomes.ResponseWrapper
 import mocks.MockAppConfig
 import play.api.mvc.Result
+import shared.controllers.{ControllerBaseSpec, ControllerTestRunner}
+import shared.models.domain.{Nino, TaxYear}
+import shared.models.errors._
+import shared.models.outcomes.ResponseWrapper
+import shared.services.{MockEnrolmentsAuthService, MockMtdIdLookupService}
+import shared.utils.MockIdGenerator
 import v1.fixtures.RetrieveDividendsFixtures
 import v1.fixtures.RetrieveDividendsFixtures.responseModel
-import v1.mocks.requestParsers.MockRetrieveDividendsRequestParser
 import v1.mocks.services.MockRetrieveDividendsService
-import v1.models.request.retrieveDividends.{RetrieveDividendsRawData, RetrieveDividendsRequest}
+import v1.mocks.validators.MockRetrieveDividendsValidatorFactory
+import v1.models.request.retrieveDividends.RetrieveDividendsRequest
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -39,16 +39,12 @@ class RetrieveDividendsControllerSpec
     with MockEnrolmentsAuthService
     with MockMtdIdLookupService
     with MockRetrieveDividendsService
-    with MockRetrieveDividendsRequestParser
+    with MockRetrieveDividendsValidatorFactory
     with MockIdGenerator
     with MockAppConfig {
 
   private val taxYear: String = "2019-20"
 
-  private val rawData: RetrieveDividendsRawData = RetrieveDividendsRawData(
-    nino = nino,
-    taxYear = taxYear
-  )
 
   private val requestData: RetrieveDividendsRequest = RetrieveDividendsRequest(
     nino = Nino(nino),
@@ -60,9 +56,7 @@ class RetrieveDividendsControllerSpec
   "RetrieveDividendsController" should {
     "return a successful response with status 200 (OK)" when {
       "given a valid request" in new Test {
-        MockRetrieveDividendsRequestParser
-          .parse(rawData)
-          .returns(Right(requestData))
+        willUseValidator(returningSuccess(requestData))
 
         MockRetrieveDividendsService
           .retrieve(requestData)
@@ -77,17 +71,13 @@ class RetrieveDividendsControllerSpec
 
     "return the error as per spec" when {
       "parser validation fails" in new Test {
-        MockRetrieveDividendsRequestParser
-          .parse(rawData)
-          .returns(Left(ErrorWrapper(correlationId, NinoFormatError)))
+        willUseValidator(returning(NinoFormatError))
 
         runErrorTest(NinoFormatError)
       }
 
       "the service returns an error" in new Test {
-        MockRetrieveDividendsRequestParser
-          .parse(rawData)
-          .returns(Right(requestData))
+        willUseValidator(returningSuccess(requestData))
 
         MockRetrieveDividendsService
           .retrieve(requestData)
@@ -103,7 +93,7 @@ class RetrieveDividendsControllerSpec
     val controller = new RetrieveDividendsController(
       authService = mockEnrolmentsAuthService,
       lookupService = mockMtdIdLookupService,
-      parser = mockRetrieveDividendsRequestParser,
+      validatorFactory = mockRetrieveDividendsValidatorFactory,
       service = mockRetrieveDividendsService,
       cc = cc,
       idGenerator = mockIdGenerator

@@ -16,13 +16,12 @@
 
 package v1.controllers
 
-import api.controllers._
-import api.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService}
 import config.AppConfig
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
-import utils.IdGenerator
-import v1.controllers.requestParsers.DeleteUkDividendsIncomeAnnualSummaryRequestParser
-import v1.models.request.deleteUkDividendsIncomeAnnualSummary.DeleteUkDividendsIncomeAnnualSummaryRawData
+import shared.controllers._
+import shared.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService}
+import shared.utils.IdGenerator
+import v1.controllers.validators.DeleteUkDividendsIncomeAnnualSummaryValidatorFactory
 import v1.services.DeleteUkDividendsIncomeAnnualSummaryService
 
 import javax.inject.{Inject, Singleton}
@@ -31,7 +30,7 @@ import scala.concurrent.ExecutionContext
 @Singleton
 class DeleteUkDividendsIncomeAnnualSummaryController @Inject() (val authService: EnrolmentsAuthService,
                                                                 val lookupService: MtdIdLookupService,
-                                                                parser: DeleteUkDividendsIncomeAnnualSummaryRequestParser,
+                                                                validatorFactory: DeleteUkDividendsIncomeAnnualSummaryValidatorFactory,
                                                                 service: DeleteUkDividendsIncomeAnnualSummaryService,
                                                                 auditService: AuditService,
                                                                 cc: ControllerComponents,
@@ -48,14 +47,10 @@ class DeleteUkDividendsIncomeAnnualSummaryController @Inject() (val authService:
     authorisedAction(nino).async { implicit request =>
       implicit val ctx: RequestContext = RequestContext.from(idGenerator, endpointLogContext)
 
-      val rawData: DeleteUkDividendsIncomeAnnualSummaryRawData = DeleteUkDividendsIncomeAnnualSummaryRawData(
-        nino = nino,
-        taxYear = taxYear
-      )
-
+      val validator = validatorFactory.validator(nino, taxYear)
       val requestHandler =
         RequestHandler
-          .withParser(parser)
+          .withValidator(validator)
           .withService(service.deleteUkDividends)
           .withNoContentResult()
           .withAuditing(
@@ -66,7 +61,7 @@ class DeleteUkDividendsIncomeAnnualSummaryController @Inject() (val authService:
               params = Map("nino" -> nino, "taxYear" -> taxYear)
             )
           )
-      requestHandler.handleRequest(rawData)
+      requestHandler.handleRequest()
     }
 
 }

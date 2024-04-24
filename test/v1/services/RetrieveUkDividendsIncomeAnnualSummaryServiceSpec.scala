@@ -16,12 +16,12 @@
 
 package v1.services
 
-import api.controllers.EndpointLogContext
-import api.models.domain.{Nino, TaxYear}
-import api.models.errors._
-import api.models.outcomes.ResponseWrapper
-import api.services.ServiceSpec
-import v1.mocks.connectors.MockRetrieveUKDividendsIncomeAnnualSummaryConnector
+import shared.controllers.EndpointLogContext
+import shared.models.domain.{Nino, TaxYear}
+import shared.models.errors._
+import shared.models.outcomes.ResponseWrapper
+import shared.services.ServiceSpec
+import v1.mocks.connectors.MockRetrieveUkDividendsIncomeAnnualSummaryConnector
 import v1.models.request.retrieveUkDividendsAnnualIncomeSummary.RetrieveUkDividendsAnnualIncomeSummaryRequest
 import v1.models.response.retrieveUkDividendsAnnualIncomeSummary.RetrieveUkDividendsAnnualIncomeSummaryResponse
 
@@ -39,11 +39,11 @@ class RetrieveUkDividendsIncomeAnnualSummaryServiceSpec extends ServiceSpec {
     otherUkDividends = Some(11.12)
   )
 
-  trait Test extends MockRetrieveUKDividendsIncomeAnnualSummaryConnector {
+  trait Test extends MockRetrieveUkDividendsIncomeAnnualSummaryConnector {
     implicit val logContext: EndpointLogContext = EndpointLogContext("c", "ep")
 
     val service: RetrieveUkDividendsIncomeAnnualSummaryService =
-      new RetrieveUkDividendsIncomeAnnualSummaryService(connector = mockRetrieveUKDividendsIncomeAnnualSummaryConnector)
+      new RetrieveUkDividendsIncomeAnnualSummaryService(connector = mockRetrieveUkDividendsIncomeAnnualSummaryConnector)
 
   }
 
@@ -52,8 +52,8 @@ class RetrieveUkDividendsIncomeAnnualSummaryServiceSpec extends ServiceSpec {
       "return correct result for a success" in new Test {
         val outcome = Right(ResponseWrapper(correlationId, validResponse))
 
-        MockRetrieveUKDividendsIncomeAnnualSummaryConnector
-          .retrieveUKDividendsIncomeAnnualSummary(requestData)
+        MockRetrieveUkDividendsIncomeAnnualSummaryConnector
+          .retrieveUkDividendsIncomeAnnualSummary(requestData)
           .returns(Future.successful(outcome))
 
         await(service.retrieveUKDividendsIncomeAnnualSummary(requestData)) shouldBe outcome
@@ -64,8 +64,8 @@ class RetrieveUkDividendsIncomeAnnualSummaryServiceSpec extends ServiceSpec {
         def serviceError(downstreamErrorCode: String, error: MtdError): Unit =
           s"a $downstreamErrorCode error is returned from the service" in new Test {
 
-            MockRetrieveUKDividendsIncomeAnnualSummaryConnector
-              .retrieveUKDividendsIncomeAnnualSummary(requestData)
+            MockRetrieveUkDividendsIncomeAnnualSummaryConnector
+              .retrieveUkDividendsIncomeAnnualSummary(requestData)
               .returns(Future.successful(Left(ResponseWrapper(correlationId, DownstreamErrors.single(DownstreamErrorCode(downstreamErrorCode))))))
 
             await(service.retrieveUKDividendsIncomeAnnualSummary(requestData)) shouldBe Left(ErrorWrapper(correlationId, error))

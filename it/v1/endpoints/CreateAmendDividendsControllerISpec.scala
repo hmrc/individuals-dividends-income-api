@@ -16,8 +16,8 @@
 
 package v1.endpoints
 
-import api.models.errors._
-import api.stubs.{AuditStub, AuthStub, DownstreamStub, MtdIdLookupStub}
+import shared.models.errors._
+import shared.stubs.{AuditStub, AuthStub, DownstreamStub, MtdIdLookupStub}
 import play.api.http.HeaderNames.ACCEPT
 import play.api.http.Status._
 import play.api.libs.json.{JsValue, Json}
@@ -176,7 +176,10 @@ class CreateAmendDividendsControllerISpec extends IntegrationBaseSpec {
       "any valid request is made" in new NonTysTest {
 
         override def setupStubs(): Unit =
-          DownstreamStub.onSuccess(DownstreamStub.PUT, downstreamUri, NO_CONTENT)
+          AuditStub.audit()
+        AuthStub.authorised()
+        MtdIdLookupStub.ninoFound(nino)
+        DownstreamStub.onSuccess(DownstreamStub.PUT, downstreamUri, NO_CONTENT)
 
         val response: WSResponse = await(request().put(requestBodyJson))
         response.status shouldBe OK
@@ -296,7 +299,7 @@ class CreateAmendDividendsControllerISpec extends IntegrationBaseSpec {
           ))
       )
 
-      val countryCodeRuleError: MtdError = CountryCodeRuleError.copy(
+      val countryCodeRuleError: MtdError = RuleCountryCodeError.copy(
         paths = Some(
           Seq(
             "/dividendIncomeReceivedWhilstAbroad/0/countryCode",

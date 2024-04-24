@@ -16,8 +16,8 @@
 
 package v1.connectors
 
-import api.connectors.DownstreamUri.{IfsUri, TaxYearSpecificIfsUri}
-import api.connectors.{BaseDownstreamConnector, DownstreamOutcome}
+import shared.connectors.DownstreamUri.{IfsUri, TaxYearSpecificIfsUri}
+import shared.connectors.{BaseDownstreamConnector, DownstreamOutcome}
 import config.AppConfig
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
 import v1.models.request.retrieveDividends.RetrieveDividendsRequest
@@ -34,7 +34,7 @@ class RetrieveDividendsConnector @Inject() (val http: HttpClient, val appConfig:
       ec: ExecutionContext,
       correlationId: String): Future[DownstreamOutcome[RetrieveDividendsResponse]] = {
 
-    import api.connectors.httpparsers.StandardDownstreamHttpParser._
+    import shared.connectors.httpparsers.StandardDownstreamHttpParser._
     import request._
 
     val downstreamUri =
