@@ -22,7 +22,7 @@ import shared.models.domain.TaxYear
 import shared.models.errors._
 
 import java.time.Clock
-import scala.math.Ordered.orderingToOrdered
+import scala.math.Ordering.Implicits.infixOrderingOps
 
 object ResolveTaxYear extends ResolverSupport {
 
@@ -53,18 +53,12 @@ object ResolveTaxYear extends ResolverSupport {
     resolver(value)
   }
 
-  def apply(minimumTaxYear: TaxYear, value: Option[String]): Validated[Seq[MtdError], Option[TaxYear]] = {
-    val resolver = ResolveTaxYearMinimum(minimumTaxYear)
-    resolver(value)
-  }
-
 }
 
 case class ResolveTaxYearMinimum(minimumTaxYear: TaxYear) extends ResolverSupport {
 
   val resolver: Resolver[String, TaxYear] =
-    ResolveTaxYear.resolver thenValidate
-      satisfiesMin(minimumTaxYear, RuleTaxYearNotSupportedError)
+    ResolveTaxYear.resolver thenValidate satisfiesMin(minimumTaxYear, RuleTaxYearNotSupportedError)
 
   def apply(value: String): Validated[Seq[MtdError], TaxYear] = resolver(value)
 
@@ -87,7 +81,7 @@ case class ResolveIncompleteTaxYear(incompleteTaxYearError: MtdError = RuleTaxYe
 object ResolveTysTaxYear extends ResolverSupport {
 
   val resolver: Resolver[String, TaxYear] =
-    ResolveTaxYear.resolver thenValidate satisfiesMin(TaxYear.tysTaxYear, RuleTaxYearNotSupportedError)
+    ResolveTaxYear.resolver thenValidate satisfiesMin(TaxYear.tysTaxYear, RuleTaxYearRangeInvalidError)
 
   def apply(value: String): Validated[Seq[MtdError], TaxYear] = resolver(value)
 
