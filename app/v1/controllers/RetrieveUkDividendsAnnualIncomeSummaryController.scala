@@ -16,13 +16,12 @@
 
 package v1.controllers
 
-import api.controllers.{AuthorisedController, EndpointLogContext, RequestContext, RequestHandler}
-import api.services.{EnrolmentsAuthService, MtdIdLookupService}
 import config.AppConfig
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
-import utils.IdGenerator
-import v1.controllers.requestParsers.RetrieveUkDividendsIncomeAnnualSummaryRequestParser
-import v1.models.request.retrieveUkDividendsAnnualIncomeSummary.RetrieveUkDividendsAnnualIncomeSummaryRawData
+import shared.controllers.{AuthorisedController, EndpointLogContext, RequestContext, RequestHandler}
+import shared.services.{EnrolmentsAuthService, MtdIdLookupService}
+import shared.utils.IdGenerator
+import v1.controllers.validators.RetrieveUkDividendsIncomeAnnualSummaryValidatorFactory
 import v1.services.RetrieveUkDividendsIncomeAnnualSummaryService
 
 import javax.inject.{Inject, Singleton}
@@ -31,7 +30,7 @@ import scala.concurrent.ExecutionContext
 @Singleton
 class RetrieveUkDividendsAnnualIncomeSummaryController @Inject() (val authService: EnrolmentsAuthService,
                                                                   val lookupService: MtdIdLookupService,
-                                                                  parser: RetrieveUkDividendsIncomeAnnualSummaryRequestParser,
+                                                                  validatorFactory: RetrieveUkDividendsIncomeAnnualSummaryValidatorFactory,
                                                                   service: RetrieveUkDividendsIncomeAnnualSummaryService,
                                                                   cc: ControllerComponents,
                                                                   val idGenerator: IdGenerator)(implicit ec: ExecutionContext, appConfig: AppConfig)
@@ -47,17 +46,13 @@ class RetrieveUkDividendsAnnualIncomeSummaryController @Inject() (val authServic
     authorisedAction(nino).async { implicit request =>
       implicit val ctx: RequestContext = RequestContext.from(idGenerator, endpointLogContext)
 
-      val rawData: RetrieveUkDividendsAnnualIncomeSummaryRawData = RetrieveUkDividendsAnnualIncomeSummaryRawData(
-        nino = nino,
-        taxYear = taxYear
-      )
-
+      val validator = validatorFactory.validator(nino, taxYear)
       val requestHandler = RequestHandler
-        .withParser(parser)
+        .withValidator(validator)
         .withService(service.retrieveUKDividendsIncomeAnnualSummary)
         .withPlainJsonResult()
 
-      requestHandler.handleRequest(rawData)
+      requestHandler.handleRequest()
     }
 
 }

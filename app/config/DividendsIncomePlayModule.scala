@@ -17,11 +17,17 @@
 package config
 
 import com.google.inject.AbstractModule
+import definition.DividendsApiDefinitionFactory
+import routing.DividendsVersionRoutingMap
+import shared.definition.ApiDefinitionFactory
+import shared.routing.VersionRoutingMap
 
 class DividendsIncomePlayModule extends AbstractModule {
 
   override def configure(): Unit = {
     bind(classOf[AppConfig]).to(classOf[AppConfigImpl]).asEagerSingleton()
+    bind(classOf[ApiDefinitionFactory]).to(classOf[DividendsApiDefinitionFactory]).asEagerSingleton()
+    bind(classOf[VersionRoutingMap]).to(classOf[DividendsVersionRoutingMap]).asEagerSingleton()
   }
 
 }

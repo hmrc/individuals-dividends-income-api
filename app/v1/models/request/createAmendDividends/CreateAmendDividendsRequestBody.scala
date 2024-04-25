@@ -18,7 +18,7 @@ package v1.models.request.createAmendDividends
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsPath, OWrites, Reads}
-import utils.JsonUtils
+import shared.utils.JsonUtils
 
 case class CreateAmendDividendsRequestBody(foreignDividend: Option[Seq[CreateAmendForeignDividendItem]],
                                            dividendIncomeReceivedWhilstAbroad: Option[Seq[CreateAmendDividendIncomeReceivedWhilstAbroadItem]],
@@ -47,5 +47,4 @@ object CreateAmendDividendsRequestBody extends JsonUtils {
       (JsPath \ "bonusIssuesOfSecurities").writeNullable[CreateAmendCommonDividends] and
       (JsPath \ "closeCompanyLoansWrittenOff").writeNullable[CreateAmendCommonDividends]
   )(unlift(CreateAmendDividendsRequestBody.unapply))
-
 }

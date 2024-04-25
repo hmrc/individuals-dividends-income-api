@@ -16,18 +16,18 @@
 
 package v1.controllers
 
-import api.controllers.{ControllerBaseSpec, ControllerTestRunner}
-import api.models.audit.{AuditEvent, AuditResponse, FlattenedGenericAuditDetail}
-import api.models.auth.UserDetails
-import api.models.domain.{Nino, TaxYear}
-import api.models.errors._
-import api.models.outcomes.ResponseWrapper
 import mocks.MockAppConfig
 import play.api.libs.json.{JsObject, JsValue}
-import play.api.mvc.{AnyContentAsJson, Result}
-import v1.mocks.requestParsers.MockCreateAmendUkDividendsAnnualSummaryRequestParser
+import play.api.mvc.Result
+import shared.controllers.{ControllerBaseSpec, ControllerTestRunner}
+import shared.models.audit.{AuditEvent, AuditResponse, FlattenedGenericAuditDetail}
+import shared.models.auth.UserDetails
+import shared.models.domain.{Nino, TaxYear}
+import shared.models.errors._
+import shared.models.outcomes.ResponseWrapper
 import v1.mocks.services.MockCreateAmendUkDividendsAnnualSummaryService
-import v1.models.request.createAmendUkDividendsIncomeAnnualSummary.{CreateAmendUkDividendsIncomeAnnualSummaryBody, CreateAmendUkDividendsIncomeAnnualSummaryRawData, CreateAmendUkDividendsIncomeAnnualSummaryRequest}
+import v1.mocks.validators.MockCreateAmendDividendsIncomeAnnualSummaryValidatorFactory
+import v1.models.request.createAmendUkDividendsIncomeAnnualSummary.{CreateAmendUkDividendsIncomeAnnualSummaryBody, CreateAmendUkDividendsIncomeAnnualSummaryRequest}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -36,7 +36,7 @@ class CreateAmendUkDividendsAnnualSummaryControllerSpec
     extends ControllerBaseSpec
     with ControllerTestRunner
     with MockCreateAmendUkDividendsAnnualSummaryService
-    with MockCreateAmendUkDividendsAnnualSummaryRequestParser
+    with MockCreateAmendDividendsIncomeAnnualSummaryValidatorFactory
     with MockAppConfig {
 
   private val taxYear = "2019-20"
@@ -44,11 +44,6 @@ class CreateAmendUkDividendsAnnualSummaryControllerSpec
 
   private val requestJson: JsObject = JsObject.empty
 
-  private val rawData: CreateAmendUkDividendsIncomeAnnualSummaryRawData = CreateAmendUkDividendsIncomeAnnualSummaryRawData(
-    nino = nino,
-    taxYear = taxYear,
-    body = AnyContentAsJson.apply(requestJson)
-  )
 
   private val requestModel: CreateAmendUkDividendsIncomeAnnualSummaryBody = CreateAmendUkDividendsIncomeAnnualSummaryBody(None, None)
 
@@ -61,9 +56,7 @@ class CreateAmendUkDividendsAnnualSummaryControllerSpec
   "CreateAmendUkDividendsAnnualSummaryController" should {
     "return a successful response with status 200 (OK)" when {
       "given a valid request" in new Test {
-        MockCreateAmendUkDividendsAnnualSummaryRequestParser
-          .parse(rawData)
-          .returns(Right(requestData))
+        willUseValidator(returningSuccess(requestData))
 
         MockCreateAmendAmendUkDividendsAnnualSummaryService
           .createOrAmendAnnualSummary(requestData)
@@ -76,17 +69,13 @@ class CreateAmendUkDividendsAnnualSummaryControllerSpec
 
     "return the error as per spec" when {
       "the parser validation fails" in new Test {
-        MockCreateAmendUkDividendsAnnualSummaryRequestParser
-          .parse(rawData)
-          .returns(Left(ErrorWrapper(correlationId, NinoFormatError)))
+        willUseValidator(returning(NinoFormatError))
 
         runErrorTest(NinoFormatError)
       }
 
       "the service returns an error" in new Test {
-        MockCreateAmendUkDividendsAnnualSummaryRequestParser
-          .parse(rawData)
-          .returns(Right(requestData))
+        willUseValidator(returningSuccess(requestData))
 
         MockCreateAmendAmendUkDividendsAnnualSummaryService
           .createOrAmendAnnualSummary(requestData)
@@ -102,7 +91,7 @@ class CreateAmendUkDividendsAnnualSummaryControllerSpec
     val controller = new CreateAmendUkDividendsAnnualSummaryController(
       authService = mockEnrolmentsAuthService,
       lookupService = mockMtdIdLookupService,
-      parser = mockCreateAmendUkDividendsAnnualSummaryRequestParser,
+      validatorFactory = mockCreateAmendDividendsIncomeAnnualSummaryValidatorFactory,
       service = mockCreateAmendUkDividendsAnnualSummaryService,
       cc = cc,
       idGenerator = mockIdGenerator,

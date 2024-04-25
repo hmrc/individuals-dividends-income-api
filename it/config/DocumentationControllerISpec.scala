@@ -21,7 +21,7 @@ import play.api.http.Status
 import play.api.http.Status.OK
 import play.api.libs.json.Json
 import play.api.libs.ws.WSResponse
-import routing.Version1
+import shared.routing.Version1
 import support.IntegrationBaseSpec
 
 import scala.util.Try
@@ -112,4 +112,3 @@ class DocumentationControllerISpec extends IntegrationBaseSpec {
   }
 
 }
-

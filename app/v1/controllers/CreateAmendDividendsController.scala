@@ -16,19 +16,18 @@
 
 package v1.controllers
 
-import api.controllers._
-import api.models.audit.{AuditEvent, AuditResponse, GenericAuditDetail}
-import api.models.auth.UserDetails
-import api.models.errors._
-import api.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService}
 import config.AppConfig
 import play.api.libs.json.JsValue
-import play.api.mvc.{Action, AnyContentAsJson, ControllerComponents}
+import play.api.mvc.{Action, ControllerComponents}
+import shared.controllers._
+import shared.models.audit.{AuditEvent, AuditResponse, GenericAuditDetail}
+import shared.models.auth.UserDetails
+import shared.models.errors._
+import shared.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService}
+import shared.utils.IdGenerator
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.audit.http.connector.AuditResult
-import utils.IdGenerator
-import v1.controllers.requestParsers.CreateAmendDividendsRequestParser
-import v1.models.request.createAmendDividends.CreateAmendDividendsRawData
+import v1.controllers.validators.CreateAmendDividendsValidatorFactory
 import v1.services.CreateAmendDividendsService
 
 import javax.inject.{Inject, Singleton}
@@ -37,7 +36,7 @@ import scala.concurrent.{ExecutionContext, Future}
 @Singleton
 class CreateAmendDividendsController @Inject() (val authService: EnrolmentsAuthService,
                                                 val lookupService: MtdIdLookupService,
-                                                parser: CreateAmendDividendsRequestParser,
+                                                validatorFactory: CreateAmendDividendsValidatorFactory,
                                                 service: CreateAmendDividendsService,
                                                 auditService: AuditService,
                                                 cc: ControllerComponents,
@@ -53,19 +52,15 @@ class CreateAmendDividendsController @Inject() (val authService: EnrolmentsAuthS
   def createAmendDividends(nino: String, taxYear: String): Action[JsValue] =
     authorisedAction(nino).async(parse.json) { implicit request =>
       implicit val ctx: RequestContext = RequestContext.from(idGenerator, endpointLogContext)
-      val rawData: CreateAmendDividendsRawData = CreateAmendDividendsRawData(
-        nino = nino,
-        taxYear = taxYear,
-        body = AnyContentAsJson(request.body)
-      )
 
+      val validator = validatorFactory.validator(nino, taxYear, request.body)
       val requestHandler = RequestHandler
-        .withParser(parser)
+        .withValidator(validator)
         .withService(service.createAmendDividends)
         .withAuditing(auditHandler(nino, taxYear, request))
         .withNoContentResult(successStatus = OK)
 
-      requestHandler.handleRequest(rawData)
+      requestHandler.handleRequest()
     }
 
   private def auditHandler(nino: String, taxYear: String, request: UserRequest[JsValue]): AuditHandler = {

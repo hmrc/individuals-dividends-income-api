@@ -9,7 +9,7 @@ The Individuals Dividends Income API allows a developer to create, amend, retrie
 
 Run the microservice from the console using: `sbt run` (starts on port 7763 by default)
 
-Start the service manager profile: `sm --start MTDFB_INDIVIDUALS_DIVIDENDS_INCOME`
+Start the service manager profile: `sm2 --start MTDFB_INDIVIDUALS_DIVIDENDS_INCOME`
 
 ## Run Tests
 

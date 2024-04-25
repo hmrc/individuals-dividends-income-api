@@ -16,6 +16,6 @@
 
 package v1.models.request.retrieveDividends
 
-import api.models.domain.{Nino, TaxYear}
+import shared.models.domain.{Nino, TaxYear}
 
 case class RetrieveDividendsRequest(nino: Nino, taxYear: TaxYear)

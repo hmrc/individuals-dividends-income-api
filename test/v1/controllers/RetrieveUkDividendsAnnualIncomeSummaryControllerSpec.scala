@@ -16,16 +16,16 @@
 
 package v1.controllers
 
-import api.controllers.{ControllerBaseSpec, ControllerTestRunner}
-import api.models.domain.{Nino, TaxYear}
-import api.models.errors._
-import api.models.outcomes.ResponseWrapper
 import mocks.MockAppConfig
 import play.api.libs.json.Json
 import play.api.mvc.Result
-import v1.mocks.requestParsers.MockRetrieveUkDividendsAnnualIncomeSummaryRequestParser
+import shared.controllers.{ControllerBaseSpec, ControllerTestRunner}
+import shared.models.domain.{Nino, TaxYear}
+import shared.models.errors._
+import shared.models.outcomes.ResponseWrapper
 import v1.mocks.services.MockRetrieveUkDividendsAnnualIncomeSummaryService
-import v1.models.request.retrieveUkDividendsAnnualIncomeSummary.{RetrieveUkDividendsAnnualIncomeSummaryRawData, RetrieveUkDividendsAnnualIncomeSummaryRequest}
+import v1.mocks.validators.MockRetrieveUkDividendsIncomeAnnualSummaryValidatorFactory
+import v1.models.request.retrieveUkDividendsAnnualIncomeSummary.RetrieveUkDividendsAnnualIncomeSummaryRequest
 import v1.models.response.retrieveUkDividendsAnnualIncomeSummary.RetrieveUkDividendsAnnualIncomeSummaryResponse
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -35,15 +35,11 @@ class RetrieveUkDividendsAnnualIncomeSummaryControllerSpec
     extends ControllerBaseSpec
     with ControllerTestRunner
     with MockRetrieveUkDividendsAnnualIncomeSummaryService
-    with MockRetrieveUkDividendsAnnualIncomeSummaryRequestParser
+    with MockRetrieveUkDividendsIncomeAnnualSummaryValidatorFactory
     with MockAppConfig {
 
   private val taxYear = "2019-20"
 
-  private val rawData: RetrieveUkDividendsAnnualIncomeSummaryRawData = RetrieveUkDividendsAnnualIncomeSummaryRawData(
-    nino = nino,
-    taxYear = taxYear
-  )
 
   private val requestData: RetrieveUkDividendsAnnualIncomeSummaryRequest = RetrieveUkDividendsAnnualIncomeSummaryRequest(
     nino = Nino(nino),
@@ -65,9 +61,7 @@ class RetrieveUkDividendsAnnualIncomeSummaryControllerSpec
   "RetrieveDividendsController" should {
     "return a successful response with status 200 (OK)" when {
       "given a valid request" in new Test {
-        MockRetrieveUkDividendsAnnualIncomeSummaryRequestParser
-          .parse(rawData)
-          .returns(Right(requestData))
+        willUseValidator(returningSuccess(requestData))
 
         MockRetrieveUkDividendsIncomeAnnualSummaryService
           .retrieveUkDividends(requestData)
@@ -82,17 +76,13 @@ class RetrieveUkDividendsAnnualIncomeSummaryControllerSpec
 
     "return the error as per spec" when {
       "the parser validation fails" in new Test {
-        MockRetrieveUkDividendsAnnualIncomeSummaryRequestParser
-          .parse(rawData)
-          .returns(Left(ErrorWrapper(correlationId, NinoFormatError)))
+        willUseValidator(returning(NinoFormatError))
 
         runErrorTest(NinoFormatError)
       }
 
       "the service returns an error" in new Test {
-        MockRetrieveUkDividendsAnnualIncomeSummaryRequestParser
-          .parse(rawData)
-          .returns(Right(requestData))
+        willUseValidator(returningSuccess(requestData))
 
         MockRetrieveUkDividendsIncomeAnnualSummaryService
           .retrieveUkDividends(requestData)
@@ -108,7 +98,7 @@ class RetrieveUkDividendsAnnualIncomeSummaryControllerSpec
     val controller = new RetrieveUkDividendsAnnualIncomeSummaryController(
       authService = mockEnrolmentsAuthService,
       lookupService = mockMtdIdLookupService,
-      parser = mockRetrieveUkDividendsAnnualIncomeSummaryRequestParser,
+      validatorFactory = mockRetrieveDividendsIncomeAnnualSummaryValidatorFactory,
       service = mockRetrieveUkDividendsAnnualIncomeSummaryService,
       cc = cc,
       idGenerator = mockIdGenerator

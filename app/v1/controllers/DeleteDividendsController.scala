@@ -16,13 +16,12 @@
 
 package v1.controllers
 
-import api.controllers._
-import api.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService}
 import config.AppConfig
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
-import utils.IdGenerator
-import v1.controllers.requestParsers.DeleteDividendsRequestParser
-import v1.models.request.deleteDividends.DeleteDividendsRawData
+import shared.controllers._
+import shared.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService}
+import shared.utils.IdGenerator
+import v1.controllers.validators.DeleteDividendsValidatorFactory
 import v1.services.DeleteDividendsService
 
 import javax.inject.{Inject, Singleton}
@@ -31,7 +30,7 @@ import scala.concurrent.ExecutionContext
 @Singleton
 class DeleteDividendsController @Inject() (val authService: EnrolmentsAuthService,
                                            val lookupService: MtdIdLookupService,
-                                           requestParser: DeleteDividendsRequestParser,
+                                           validatorFactory: DeleteDividendsValidatorFactory,
                                            service: DeleteDividendsService,
                                            auditService: AuditService,
                                            cc: ControllerComponents,
@@ -48,13 +47,9 @@ class DeleteDividendsController @Inject() (val authService: EnrolmentsAuthServic
     authorisedAction(nino).async { implicit request =>
       implicit val ctx: RequestContext = RequestContext.from(idGenerator, endpointLogContext)
 
-      val rawData: DeleteDividendsRawData = DeleteDividendsRawData(
-        nino = nino,
-        taxYear = taxYear
-      )
-
+      val validator = validatorFactory.validator(nino, taxYear)
       val requestHandler = RequestHandler
-        .withParser(requestParser)
+        .withValidator(validator)
         .withService(service.delete)
         .withAuditing(AuditHandler(
           auditService = auditService,
@@ -64,7 +59,7 @@ class DeleteDividendsController @Inject() (val authService: EnrolmentsAuthServic
           requestBody = None
         ))
 
-      requestHandler.handleRequest(rawData)
+      requestHandler.handleRequest()
     }
 
 }
