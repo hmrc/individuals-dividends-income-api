@@ -39,7 +39,7 @@ class DeleteUkDividendsIncomeAnnualSummaryConnector @Inject() (val http: HttpCli
 
     import request._
 
-    val intent = if (DividendsIncomeFeatureSwitches().isPassDeleteIntentEnabled) Some("DELETE") else None
+    val intent = if (DividendsIncomeFeatureSwitches().isPassDeleteIntentEnabled) Some("IDI_DELETE") else None
 
     val path = s"income-tax/nino/${nino.nino}/income-source/dividends/annual/${taxYear.asDownstream}"
 
