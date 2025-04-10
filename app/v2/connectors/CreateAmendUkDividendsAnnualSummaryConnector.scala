@@ -47,8 +47,10 @@ class CreateAmendUkDividendsAnnualSummaryConnector @Inject() (val http: HttpClie
       if (taxYear.useTaxYearSpecificApi) {
         TaxYearSpecificIfsUri[Unit](s"income-tax/${taxYear.asTysDownstream}/$nino/income-source/dividends/annual")
       } else if (DividendsIncomeFeatureSwitches().isDesIfMigrationEnabled) {
+        println("++++++++if"+ DividendsIncomeFeatureSwitches().isHipEnabled)
         IfsUri[Unit](path)
       } else {
+        println("++++++++else"+ DividendsIncomeFeatureSwitches().isHipEnabled)
         DesUri[Unit](path)
       }
 

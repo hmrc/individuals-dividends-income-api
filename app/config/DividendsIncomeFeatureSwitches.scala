@@ -23,6 +23,7 @@ case class DividendsIncomeFeatureSwitches private(protected val featureSwitchCon
 
   val isDesIfMigrationEnabled: Boolean = isEnabled("desIf_Migration")
   val isPassDeleteIntentEnabled: Boolean = isEnabled("passDeleteIntentHeader")
+  val isHipEnabled: Boolean = isEnabled("additional_directorship_dividend_data")
 }
 
 object DividendsIncomeFeatureSwitches {
