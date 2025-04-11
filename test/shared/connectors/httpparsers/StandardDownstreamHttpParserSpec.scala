@@ -162,8 +162,12 @@ class StandardDownstreamHttpParserSpec extends UnitSpec {
       |        "errorDescription": "Error 2 description"
       |    },
       |    {
-      |        "errorCode": "1217",
+      |        "errorCode": "1216",
       |        "errorDescription": "Error 3 description"
+      |    },
+      |    {
+      |        "errorCode": "1217",
+      |        "errorDescription": "Error 4 description"
       |    }
       |]
     """.stripMargin
@@ -183,8 +187,12 @@ class StandardDownstreamHttpParserSpec extends UnitSpec {
       |            "errorDescription": "Error 2 description"
       |        },
       |        {
-      |            "errorCode": "1217",
+      |            "errorCode": "1216",
       |            "errorDescription": "Error 3 description"
+      |        },
+      |        {
+      |        "errorCode": "1217",
+      |        "errorDescription": "Error 4 description"
       |        }
       |    ]
       |}
@@ -261,7 +269,7 @@ class StandardDownstreamHttpParserSpec extends UnitSpec {
         )
 
         httpReads.read(method, url, httpResponse) shouldBe Left(
-          ResponseWrapper(correlationId, DownstreamErrors(List(DownstreamErrorCode("1117"), DownstreamErrorCode("1215"), DownstreamErrorCode("1217"))))
+          ResponseWrapper(correlationId, DownstreamErrors(List(DownstreamErrorCode("1117"), DownstreamErrorCode("1215"), DownstreamErrorCode("1216"), DownstreamErrorCode("1217"))))
         )
       }
     }
@@ -273,7 +281,7 @@ class StandardDownstreamHttpParserSpec extends UnitSpec {
         )
 
         httpReads.read(method, url, httpResponse) shouldBe Left(
-          ResponseWrapper(correlationId, DownstreamErrors(List(DownstreamErrorCode("1117"), DownstreamErrorCode("1215"), DownstreamErrorCode("1217"))))
+          ResponseWrapper(correlationId, DownstreamErrors(List(DownstreamErrorCode("1117"), DownstreamErrorCode("1215"), DownstreamErrorCode("1216"), DownstreamErrorCode("1217"))))
         )
       }
     }

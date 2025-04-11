@@ -74,9 +74,9 @@ class DeleteAdditionalDirectorshipDividendsServiceSpec extends ServiceSpec {
           "1215" -> NinoFormatError,
           "1117" -> TaxYearFormatError,
           "1217" -> EmploymentIdFormatError,
-          "5010" -> NotFoundError
+          "5010" -> NotFoundError,
+          "1216" -> InternalError,
         )
-
         errors.foreach(args => (serviceError _).tupled(args))
       }
     }

@@ -34,14 +34,13 @@ class DeleteAdditionalDirectorshipDividendsService @Inject()(connector: DeleteAd
     connector.delete(request).map(_.leftMap(mapDownstreamErrors(downstreamErrorMap)))
 
 
-  private val downstreamErrorMap: Map[String, MtdError] = {
+  private val downstreamErrorMap: Map[String, MtdError] =
      Map(
       "1215" -> NinoFormatError,
       "1117" -> TaxYearFormatError,
       "1217" -> EmploymentIdFormatError,
-      "5010" -> NotFoundError
+      "5010" -> NotFoundError,
+      "1216" -> InternalError
     )
-
-  }
 
 }
