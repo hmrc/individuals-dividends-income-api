@@ -111,7 +111,8 @@ class DeleteAdditionalDirectorshipDividendsControllerISpec extends IntegrationBa
           (BAD_REQUEST, "1215", BAD_REQUEST, NinoFormatError),
           (BAD_REQUEST, "1117", BAD_REQUEST, TaxYearFormatError),
           (BAD_REQUEST, "1217", BAD_REQUEST, EmploymentIdFormatError),
-          (BAD_REQUEST, "1216", INTERNAL_SERVER_ERROR, InternalError)
+          (BAD_REQUEST, "1216", INTERNAL_SERVER_ERROR, InternalError),
+          (NOT_FOUND,   "5010", NOT_FOUND, NotFoundError)
         )
 
         errors.foreach(args => (serviceErrorTest _).tupled(args))
@@ -125,7 +126,7 @@ class DeleteAdditionalDirectorshipDividendsControllerISpec extends IntegrationBa
     val employmentId: String = "4557ecb5-fd32-48cc-81f5-e6acd1099f3c"
     def taxYear: String
     def downstreamUri: String
-    def uri: String = s"/directorships/$nino/$taxYear/$employmentId"
+    def uri: String = s"/directorship/$nino/$taxYear/$employmentId"
 
     def setupStubs(): StubMapping
 

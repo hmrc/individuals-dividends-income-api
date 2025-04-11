@@ -35,13 +35,13 @@ class DeleteAdditionalDirectorshipDividendsService @Inject()(connector: DeleteAd
 
 
   private val downstreamErrorMap: Map[String, MtdError] = {
-    val hipErrors = Map(
+     Map(
       "1215" -> NinoFormatError,
       "1117" -> TaxYearFormatError,
       "1217" -> EmploymentIdFormatError,
       "5010" -> NotFoundError
     )
-    hipErrors
+
   }
 
 }
