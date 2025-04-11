@@ -16,7 +16,6 @@
 
 package v2.services
 
-import common.errors.RuleOutsideAmendmentWindowError
 import shared.controllers.EndpointLogContext
 import shared.models.domain.{EmploymentId, Nino, TaxYear}
 import shared.models.errors._
@@ -30,7 +29,7 @@ import scala.concurrent.Future
 class DeleteAdditionalDirectorshipDividendsServiceSpec extends ServiceSpec {
 
   private val nino    = "AA112233A"
-  private val taxYear = "2019-20"
+  private val taxYear = "2024-25"
   private val employmentId = "4557ecb5-fd32-48cc-81f5-e6acd1099f3c"
 
   trait Test extends MockDeleteAdditionalDirectorshipDividendsConnector {
@@ -71,15 +70,11 @@ class DeleteAdditionalDirectorshipDividendsServiceSpec extends ServiceSpec {
             result shouldBe Left(ErrorWrapper(correlationId, error))
           }
 
-        val errors = List(
-          ("INVALID_TAXABLE_ENTITY_ID", NinoFormatError),
-          ("INVALID_TAX_YEAR", TaxYearFormatError),
-          ("INVALID_EMPLOYMENT_ID", EmploymentIdFormatError),
-          ("INVALID_CORRELATIONID", InternalError),
-          ("OUTSIDE_AMENDMENT_WINDOW", RuleOutsideAmendmentWindowError),
-          ("NO_DATA_FOUND", NotFoundError),
-          ("SERVER_ERROR", InternalError),
-          ("SERVICE_UNAVAILABLE", InternalError)
+        val errors = Map(
+          "1215" -> NinoFormatError,
+          "1117" -> TaxYearFormatError,
+          "1217" -> EmploymentIdFormatError,
+          "5010" -> NotFoundError
         )
 
         errors.foreach(args => (serviceError _).tupled(args))

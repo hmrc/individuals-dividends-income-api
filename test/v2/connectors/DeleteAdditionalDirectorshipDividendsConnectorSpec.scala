@@ -17,7 +17,6 @@
 package v2.connectors
 
 
-import play.api.Configuration
 import shared.connectors.{ConnectorSpec, DownstreamOutcome}
 import shared.models.domain.{EmploymentId, Nino, TaxYear}
 import shared.models.outcomes.ResponseWrapper
@@ -33,25 +32,7 @@ class DeleteAdditionalDirectorshipDividendsConnectorSpec extends ConnectorSpec {
 
   "DeleteAdditionalDirectorshipDividendsConnector" should {
     "return a 204 result on delete for a TYS request" when {
-//      "the downstream call is successful and tax year specific and feature switch is disabled (HIP disabled)" in new IfsTest with Test {
-//        MockedSharedAppConfig.featureSwitchConfig.anyNumberOfTimes().returns(Configuration(
-//          "additional_directorship_dividend_data" -> "false"
-//        ))
-//
-//        def taxYear: TaxYear                               = TaxYear.fromMtd("2025-26")
-//        val outcome: Right[Nothing, ResponseWrapper[Unit]] = Right(ResponseWrapper(correlationId, ()))
-//
-//        willDelete(s"$baseUrl/income-sources/$nino/directorships/$employmentId/${taxYear.asTysDownstream}").returns(Future.successful(outcome))
-//        val result: DownstreamOutcome[Unit] = await(connector.delete(request))
-//        result shouldBe outcome
-//      }
-
-      "the downstream call is successful and tax year specific and feature switch is enabled (HIP enabled)" in new HipTest with Test {
-
-        MockedSharedAppConfig.featureSwitchConfig.anyNumberOfTimes().returns(Configuration(
-          "additional_directorship_dividend_data" -> "true"
-        ))
-
+      "the downstream call is successful and tax year specific" in new HipTest with Test {
         def taxYear: TaxYear                               = TaxYear.fromMtd("2025-26")
         val outcome: Right[Nothing, ResponseWrapper[Unit]] = Right(ResponseWrapper(correlationId, ()))
 
@@ -82,23 +63,6 @@ class DeleteAdditionalDirectorshipDividendsConnectorSpec extends ConnectorSpec {
         taxYear = taxYear,
         employmentId = EmploymentId(employmentId)
       )
-
-
-//    protected def stubTysHttpResponse(isHipEnabled: Boolean, outcome: DownstreamOutcome[Unit])
-//    : CallHandler[Future[DownstreamOutcome[Unit]]]#Derived = {
-//
-//      println("hi" + isHipEnabled)
-//      MockedSharedAppConfig.featureSwitchConfig returns Configuration("additional_directorship_dividend_data" -> isHipEnabled)
-//
-//
-//      val url: String = if (isHipEnabled) {
-//        s"$baseUrl/itsd/income-sources/$nino/directorships/$employmentId/${taxYear.asTysDownstream}"
-//      } else {
-//        s"$baseUrl/income-sources/$nino/directorships/$employmentId/${taxYear.asTysDownstream}"
-//      }
-//      willDelete(url = url).returns(Future.successful(outcome))
-//    }
-
 
   }
 

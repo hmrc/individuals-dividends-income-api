@@ -24,8 +24,7 @@ import javax.inject.Singleton
 @Singleton
 class DeleteAdditionalDirectorshipDividendsValidatorFactory {
 
-  def validator(nino: String, taxYear: String, employmentId: String): Validator[DeleteAdditionalDirectorshipDividendsRequest] = {
+  def validator(nino: String, taxYear: String, employmentId: String): Validator[DeleteAdditionalDirectorshipDividendsRequest] =
     new DeleteAdditionalDirectorshipDividendsValidator(nino, taxYear, employmentId)
-  }
 
 }

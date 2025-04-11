@@ -16,9 +16,8 @@
 
 package v2.connectors
 
-import config.DividendsIncomeFeatureSwitches
 import shared.config.SharedAppConfig
-import shared.connectors.DownstreamUri.{HipUri, IfsUri}
+import shared.connectors.DownstreamUri.HipUri
 import shared.connectors.httpparsers.StandardDownstreamHttpParser._
 import shared.connectors.{BaseDownstreamConnector, DownstreamOutcome}
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
@@ -36,12 +35,7 @@ class DeleteAdditionalDirectorshipDividendsConnector @Inject()(val http: HttpCli
     import request._
 
     val downstreamUri =
-      if (DividendsIncomeFeatureSwitches().isHipEnabled) {
-        HipUri(s"itsd/income-sources/$nino/directorships/${employmentId.value}/${taxYear.asTysDownstream}")
-      } else {
-        IfsUri(s"income-sources/$nino/directorships/${employmentId.value}/${taxYear.asTysDownstream}")
-      }
-
+        HipUri(s"itsd/income-sources/${nino.value}/directorships/${employmentId.value}/${taxYear.asTysDownstream}")
     delete(uri = downstreamUri)
   }
 

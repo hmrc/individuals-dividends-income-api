@@ -17,7 +17,6 @@
 package v2.services
 
 import cats.implicits._
-import common.errors.RuleOutsideAmendmentWindowError
 import shared.controllers.RequestContext
 import shared.models.errors._
 import shared.services.{BaseService, ServiceOutcome}
@@ -30,22 +29,19 @@ import scala.concurrent.{ExecutionContext, Future}
 @Singleton
 class DeleteAdditionalDirectorshipDividendsService @Inject()(connector: DeleteAdditionalDirectorshipDividendsConnector) extends BaseService {
 
-  def delete(request: DeleteAdditionalDirectorshipDividendsRequest)(implicit ctx: RequestContext, ec: ExecutionContext): Future[ServiceOutcome[Unit]] = {
+  def delete(request: DeleteAdditionalDirectorshipDividendsRequest)(implicit ctx: RequestContext, ec: ExecutionContext): Future[ServiceOutcome[Unit]] =
 
     connector.delete(request).map(_.leftMap(mapDownstreamErrors(downstreamErrorMap)))
 
-  }
 
-  private val downstreamErrorMap: Map[String, MtdError] =
-    Map(
-      "INVALID_TAXABLE_ENTITY_ID" -> NinoFormatError,
-      "INVALID_TAX_YEAR"          -> TaxYearFormatError,
-      "INVALID_EMPLOYMENT_ID"     -> EmploymentIdFormatError,
-      "INVALID_CORRELATIONID"     -> InternalError,
-      "OUTSIDE_AMENDMENT_WINDOW"  -> RuleOutsideAmendmentWindowError,
-      "NO_DATA_FOUND"             -> NotFoundError,
-      "SERVER_ERROR"              -> InternalError,
-      "SERVICE_UNAVAILABLE"       -> InternalError
+  private val downstreamErrorMap: Map[String, MtdError] = {
+    val hipErrors = Map(
+      "1215" -> NinoFormatError,
+      "1117" -> TaxYearFormatError,
+      "1217" -> EmploymentIdFormatError,
+      "5010" -> NotFoundError
     )
+    hipErrors
+  }
 
 }

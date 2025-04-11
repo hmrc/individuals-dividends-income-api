@@ -17,7 +17,6 @@
 package v2.endpoints
 
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
-import common.errors.RuleOutsideAmendmentWindowError
 import play.api.http.HeaderNames.ACCEPT
 import play.api.http.Status._
 import play.api.libs.json.Json
@@ -71,26 +70,25 @@ class DeleteAdditionalDirectorshipDividendsControllerISpec extends IntegrationBa
 
         val input = Seq(
           ("AA1123A", "2025-26", "4557ecb5-fd32-48cc-81f5-e6acd1099f3c", BAD_REQUEST, NinoFormatError),
-          ("AA123456A", "20277", "4557ecb5-fd32-48cc-81f5-e6acd1099f3c",  BAD_REQUEST, TaxYearFormatError),
+          ("AA123456A", "20477", "4557ecb5-fd32-48cc-81f5-e6acd1099f3c",  BAD_REQUEST, TaxYearFormatError),
           ("AA123456A", "2025-26",  "ABCDE12345FG", BAD_REQUEST, EmploymentIdFormatError),
           ("AA123456A", "2025-27",  "4557ecb5-fd32-48cc-81f5-e6acd1099f3c", BAD_REQUEST, RuleTaxYearRangeInvalidError),
-          ("AA123456A", "2022-23",  "4557ecb5-fd32-48cc-81f5-e6acd1099f3c", BAD_REQUEST, RuleTaxYearNotSupportedError)
+          ("AA123456A", "2024-25",  "4557ecb5-fd32-48cc-81f5-e6acd1099f3c", BAD_REQUEST, RuleTaxYearNotSupportedError)
         )
         input.foreach(args => (validationErrorTest _).tupled(args))
       }
 
-      "hip service error" when {
-        def serviceErrorTest(hipStatus: Int, hipCode: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
-          s"hip returns an $hipCode error and status $hipStatus" in new HipTest {
+      "downstream service error" when {
+        def serviceErrorTest(downstreamStatus: Int, downstreamCode: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
+          s"downstream returns an $downstreamCode error and status $downstreamStatus" in new HipTest {
 
             override def setupStubs(): StubMapping = {
               AuditStub.audit()
               AuthStub.authorised()
               MtdIdLookupStub.ninoFound(nino)
-              DownstreamStub.onError(DownstreamStub.DELETE, downstreamUri, hipStatus, errorBody(hipCode))
+              DownstreamStub.onError(DownstreamStub.DELETE, downstreamUri, downstreamStatus, errorBody(downstreamCode))
 
             }
-
 
             val response: WSResponse = await(request().delete())
             response.status shouldBe expectedStatus
@@ -99,36 +97,24 @@ class DeleteAdditionalDirectorshipDividendsControllerISpec extends IntegrationBa
           }
         }
 
-
-        def errorBody(`type`: String): String =
+        def errorBody(code: String): String =
           s"""
-             |{
-             |    "origin": "HIP",
-             |    "response": {
-             |        "failures": [
-             |            {
-             |                "type": "${`type`}",
-             |                "reason": "downstream message"
-             |            }
-             |        ]
+             |[
+             |    {
+             |        "errorCode": "$code",
+             |        "errorDescription": "error description"
              |    }
-             |}
-      """.stripMargin
+             |]
+          """.stripMargin
 
-        val errors = Seq(
-          (BAD_REQUEST, "INVALID_TAXABLE_ENTITY_ID", BAD_REQUEST, NinoFormatError),
-          (BAD_REQUEST, "INVALID_TAX_YEAR", BAD_REQUEST, TaxYearFormatError),
-          (BAD_REQUEST, "INVALID_EMPLOYMENT_ID", BAD_REQUEST, EmploymentIdFormatError),
-          (BAD_REQUEST, "INVALID_CORRELATIONID", INTERNAL_SERVER_ERROR, InternalError),
-          (UNPROCESSABLE_ENTITY, "OUTSIDE_AMENDMENT_WINDOW", BAD_REQUEST, RuleOutsideAmendmentWindowError),
-          (NOT_FOUND, "NO_DATA_FOUND", NOT_FOUND, NotFoundError),
-          (INTERNAL_SERVER_ERROR, "SERVER_ERROR", INTERNAL_SERVER_ERROR, InternalError),
-          (SERVICE_UNAVAILABLE, "SERVICE_UNAVAILABLE", INTERNAL_SERVER_ERROR, InternalError)
+        val errors = List(
+          (BAD_REQUEST, "1215", BAD_REQUEST, NinoFormatError),
+          (BAD_REQUEST, "1117", BAD_REQUEST, TaxYearFormatError),
+          (BAD_REQUEST, "1217", BAD_REQUEST, EmploymentIdFormatError),
+          (BAD_REQUEST, "1216", INTERNAL_SERVER_ERROR, InternalError)
         )
 
         errors.foreach(args => (serviceErrorTest _).tupled(args))
-
-
       }
     }
   }
@@ -139,7 +125,7 @@ class DeleteAdditionalDirectorshipDividendsControllerISpec extends IntegrationBa
     val employmentId: String = "4557ecb5-fd32-48cc-81f5-e6acd1099f3c"
     def taxYear: String
     def downstreamUri: String
-    def uri: String = s"/uk/$nino/$taxYear/$employmentId"
+    def uri: String = s"/directorships/$nino/$taxYear/$employmentId"
 
     def setupStubs(): StubMapping
 
