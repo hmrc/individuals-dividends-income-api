@@ -36,7 +36,7 @@ class DeleteAdditionalDirectorshipDividendsConnectorSpec extends ConnectorSpec {
         def taxYear: TaxYear                               = TaxYear.fromMtd("2025-26")
         val outcome: Right[Nothing, ResponseWrapper[Unit]] = Right(ResponseWrapper(correlationId, ()))
 
-        willDelete(s"$baseUrl/itsd/income-sources/$nino/directorships/$employmentId/${taxYear.asTysDownstream}").returns(Future.successful(outcome))
+        willDelete(s"$baseUrl/itsd/income-sources/$nino/directorships/$employmentId?taxYear=${taxYear.asTysDownstream}").returns(Future.successful(outcome))
 
         val result: DownstreamOutcome[Unit] = await(connector.delete(request))
         result shouldBe outcome

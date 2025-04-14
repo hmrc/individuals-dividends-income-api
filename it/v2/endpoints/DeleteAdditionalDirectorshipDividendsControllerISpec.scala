@@ -143,7 +143,7 @@ class DeleteAdditionalDirectorshipDividendsControllerISpec extends IntegrationBa
 
   private trait HipTest extends Test {
     def taxYear: String       = "2025-26"
-    def downstreamUri: String = s"/itsd/income-sources/$nino/directorships/$employmentId/25-26"
+    def downstreamUri: String = s"/itsd/income-sources/$nino/directorships/$employmentId"
   }
 
 }
