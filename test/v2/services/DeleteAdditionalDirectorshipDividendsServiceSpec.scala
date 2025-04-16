@@ -16,7 +16,6 @@
 
 package v2.services
 
-import shared.controllers.EndpointLogContext
 import shared.models.domain.{EmploymentId, Nino, TaxYear}
 import shared.models.errors._
 import shared.models.outcomes.ResponseWrapper
@@ -29,14 +28,12 @@ import scala.concurrent.Future
 class DeleteAdditionalDirectorshipDividendsServiceSpec extends ServiceSpec {
 
   private val nino    = "AA112233A"
-  private val taxYear = "2024-25"
+  private val taxYear = "2025-26"
   private val employmentId = "4557ecb5-fd32-48cc-81f5-e6acd1099f3c"
 
   trait Test extends MockDeleteAdditionalDirectorshipDividendsConnector {
 
     val request: DeleteAdditionalDirectorshipDividendsRequest = DeleteAdditionalDirectorshipDividendsRequest(Nino(nino), TaxYear.fromMtd(taxYear), EmploymentId(employmentId))
-
-    implicit val logContext: EndpointLogContext = EndpointLogContext("c", "ep")
 
     val service: DeleteAdditionalDirectorshipDividendsService = new DeleteAdditionalDirectorshipDividendsService(
       connector = mockDeleteAdditionalDirectorshipDividendsConnector

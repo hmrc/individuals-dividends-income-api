@@ -56,15 +56,13 @@ class DeleteAdditionalDirectorshipDividendsControllerSpec
   )
 
   "DeleteAdditionalDirectorshipDividendsController" should {
-    "return NO_content" when {
-      "happy path" in new Test {
+    "return a successful response with status 204 (NO_CONTENT)" when {
+      "given a valid request" in new Test {
         willUseValidator(returningSuccess(requestData))
 
         MockDeleteAdditionalDirectorshipDividendsService
           .delete(requestData)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, ()))))
-
-
 
         runOkTestWithAudit(expectedStatus = NO_CONTENT)
       }
@@ -82,9 +80,9 @@ class DeleteAdditionalDirectorshipDividendsControllerSpec
 
         MockDeleteAdditionalDirectorshipDividendsService
           .delete(requestData)
-          .returns(Future.successful(Left(ErrorWrapper(correlationId, RuleTaxYearNotSupportedError))))
+          .returns(Future.successful(Left(ErrorWrapper(correlationId, EmploymentIdFormatError))))
 
-        runErrorTestWithAudit(RuleTaxYearNotSupportedError)
+        runErrorTestWithAudit(EmploymentIdFormatError)
       }
     }
   }

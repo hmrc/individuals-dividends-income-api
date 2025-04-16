@@ -35,7 +35,7 @@ class DeleteAdditionalDirectorshipDividendsConnector @Inject()(val http: HttpCli
     import request._
 
     val downstreamUri =
-        HipUri(s"itsd/income-sources/${nino.value}/directorships/${employmentId.value}?taxYear=${taxYear.asTysDownstream}")
+        HipUri(s"itsd/income-sources/$nino/directorships/$employmentId?taxYear=${taxYear.asTysDownstream}")
     delete(uri = downstreamUri)
   }
 
