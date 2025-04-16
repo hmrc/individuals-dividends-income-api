@@ -27,6 +27,8 @@ object EmploymentIdFormatError extends MtdError("FORMAT_EMPLOYMENT_ID", "The emp
 
 object TaxYearFormatError extends MtdError("FORMAT_TAX_YEAR", "The taxYear format is invalid", BAD_REQUEST)
 
+object EmploymentIdFormatError extends MtdError("FORMAT_EMPLOYMENT_ID", "The employment ID format is invalid", BAD_REQUEST)
+
 object ToDateFormatError extends MtdError(code = "FORMAT_TO_DATE", message = "The toDate format is invalid", BAD_REQUEST)
 
 object FromDateFormatError extends MtdError(code = "FORMAT_FROM_DATE", message = "The fromDate format is invalid", BAD_REQUEST)
