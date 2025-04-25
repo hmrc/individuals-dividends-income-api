@@ -1,6 +1,0 @@
-get:
-  $ref: "./additional_directorship_dividend_data_retrieve.yaml"
-  summary: Retrieve Additional Directorship Dividend Data (ADD)
-  security:
-    - User-Restricted:
-        - read:self-assessment

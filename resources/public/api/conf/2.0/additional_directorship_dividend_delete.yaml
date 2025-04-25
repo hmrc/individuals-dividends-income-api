@@ -1,6 +1,7 @@
 summary: Delete Additional Directorship and Dividend Information
 description: |
   This endpoint enables you to delete additional directorship/dividend information under each employment ID.
+  A National Insurance number, tax year and employment ID must be provided.
   
   ### Test data
   Scenario simulation using Gov-Test-Scenario headers is only available in the sandbox environment.
