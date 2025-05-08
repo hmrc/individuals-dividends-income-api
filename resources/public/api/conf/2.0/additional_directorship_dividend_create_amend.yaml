@@ -39,9 +39,9 @@ requestBody:
           value:
             $ref: './examples/additionalDirectorshipDividend/amend_request.json'
         other_amendment:
-          description: other Additional Directorship Dividend Amendment
+          description: Minimum Additional Directorship Dividend Amendment
           value:
-            $ref: './examples/additionalDirectorshipDividend/other_amend_request.json'
+            $ref: './examples/additionalDirectorshipDividend/minimum_amend_request.json'
 
 responses:
   "204":
