@@ -59,7 +59,7 @@ abstract class ControllerBaseSpec
 }
 
 trait ControllerTestRunner extends MockEnrolmentsAuthService with MockMtdIdLookupService with MockIdGenerator with RealAppConfig {
-  _: ControllerBaseSpec =>
+  this: ControllerBaseSpec =>
 
   protected val correlationId    = "X-123"
   protected val validNino        = "AA123456A"
@@ -80,6 +80,8 @@ trait ControllerTestRunner extends MockEnrolmentsAuthService with MockMtdIdLooku
       .deprecationFor(apiVersion)
       .returns(NotDeprecated.valid)
       .anyNumberOfTimes()
+
+//    MockedSharedAppConfig.apiGatewayContext.returns("individuals/dividends-income").anyNumberOfTimes()
 
     protected def runOkTest(expectedStatus: Int, maybeExpectedResponseBody: Option[JsValue] = None): Unit = {
       val result: Future[Result] = callController()
@@ -130,7 +132,7 @@ trait ControllerTestRunner extends MockEnrolmentsAuthService with MockMtdIdLooku
   }
 
   trait AuditEventChecking[DETAIL] {
-    _: ControllerTest =>
+    self: ControllerTest =>
 
     protected def event(auditResponse: AuditResponse, maybeRequestBody: Option[JsValue]): AuditEvent[DETAIL]
 

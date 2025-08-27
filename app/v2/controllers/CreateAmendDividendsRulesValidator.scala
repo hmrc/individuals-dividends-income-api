@@ -25,7 +25,7 @@ import shared.controllers.validators.resolvers.{ResolveParsedCountryCode, Resolv
 import shared.models.errors.MtdError
 import v2.models.request.createAmendDividends._
 
-object CreateAmendDividendsRulesValidator extends RulesValidator[CreateAmendDividendsRequest]{
+object CreateAmendDividendsRulesValidator extends RulesValidator[CreateAmendDividendsRequest] {
 
   private val resolveParsedNumber: ResolveParsedNumber = ResolveParsedNumber()
 
@@ -33,8 +33,10 @@ object CreateAmendDividendsRulesValidator extends RulesValidator[CreateAmendDivi
     import parsed.body._
 
     combine(
-      foreignDividend.getOrElse(Seq.empty).zipWithIndex.traverse { case (dividend, arrayIndex) => validateForeignDividend(dividend, arrayIndex)},
-      dividendIncomeReceivedWhilstAbroad.getOrElse(Seq.empty).zipWithIndex.traverse { case (dividend, arrayIndex) => validateDividendIncomeReceivedWhilstAbroad(dividend, arrayIndex)},
+      foreignDividend.getOrElse(Seq.empty).zipWithIndex.traverse { case (dividend, arrayIndex) => validateForeignDividend(dividend, arrayIndex) },
+      dividendIncomeReceivedWhilstAbroad.getOrElse(Seq.empty).zipWithIndex.traverse { case (dividend, arrayIndex) =>
+        validateDividendIncomeReceivedWhilstAbroad(dividend, arrayIndex)
+      },
       stockDividend.traverse(validateCommonDividends(_, "stockDividend")),
       redeemableShares.traverse(validateCommonDividends(_, "redeemableShares")),
       bonusIssuesOfSecurities.traverse(validateCommonDividends(_, "bonusIssuesOfSecurities")),
@@ -82,7 +84,8 @@ object CreateAmendDividendsRulesValidator extends RulesValidator[CreateAmendDivi
 
     customerRef match {
       case Some(customerRef) if stringRegex.matches(customerRef) => valid
-      case _ => Invalid(List(CustomerRefFormatError.withPath(path)))
+      case _                                                     => Invalid(List(CustomerRefFormatError.withPath(path)))
     }
   }
+
 }

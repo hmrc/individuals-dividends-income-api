@@ -15,8 +15,9 @@ object CodeCoverageSettings {
     "testOnlyDoNotUseInAppConf.*"
   )
 
-  val settings: Seq[Setting[_]] = List(
+  val settings: Seq[Setting[?]] = List(
     ScoverageKeys.coverageExcludedPackages := excludedPackages.mkString(";"),
+    ScoverageKeys.coverageExcludedFiles    := ".*\\$anon.*",
     ScoverageKeys.coverageMinimumStmtTotal := 96,
     ScoverageKeys.coverageFailOnMinimum    := true,
     ScoverageKeys.coverageHighlighting     := true
