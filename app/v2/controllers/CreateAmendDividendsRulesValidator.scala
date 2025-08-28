@@ -84,7 +84,8 @@ object CreateAmendDividendsRulesValidator extends RulesValidator[CreateAmendDivi
 
     customerRef match {
       case Some(customerRef) if stringRegex.matches(customerRef) => valid
-      case _                                                     => Invalid(List(CustomerRefFormatError.withPath(path)))
+      case None => valid
+      case _ => Invalid(List(CustomerRefFormatError.withPath(path)))
     }
   }
 
