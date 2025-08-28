@@ -81,8 +81,6 @@ trait ControllerTestRunner extends MockEnrolmentsAuthService with MockMtdIdLooku
       .returns(NotDeprecated.valid)
       .anyNumberOfTimes()
 
-//    MockedSharedAppConfig.apiGatewayContext.returns("individuals/dividends-income").anyNumberOfTimes()
-
     protected def runOkTest(expectedStatus: Int, maybeExpectedResponseBody: Option[JsValue] = None): Unit = {
       val result: Future[Result] = callController()
 

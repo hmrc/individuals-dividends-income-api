@@ -75,7 +75,7 @@ object UnexpectedJsonFieldsValidator extends ResolverSupport {
 
   sealed trait SchemaStructure
 
-  private[UnexpectedJsonFieldsValidator] object SchemaStructure {
+  object SchemaStructure {
 
     case class Obj(fields: List[(String, SchemaStructure)]) extends SchemaStructure {
       def keys: Set[String] = fields.map(_._1).toSet
@@ -99,8 +99,6 @@ object UnexpectedJsonFieldsValidator extends ResolverSupport {
     def apply[A](using aInstance: SchemaStructureSource[A]): SchemaStructureSource[A] = aInstance
 
     def instance[A](func: A => SchemaStructure): SchemaStructureSource[A] = (value: A) => func(value)
-
-    // private def instanceObj[A](func: A => SchemaStructure.Obj): ObjSchemaStructureSource[A] = (value: A) => func(value)
 
     def leaf[A]: SchemaStructureSource[A] = SchemaStructureSource.instance(_ => SchemaStructure.Leaf)
 
