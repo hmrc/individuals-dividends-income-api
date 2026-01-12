@@ -27,8 +27,8 @@ import v2.models.request.deleteDividends.DeleteDividendsRequest
 
 import javax.inject.Inject
 
-class DeleteDividendsValidator @Inject (nino: String, taxYear: String)(implicit appConfig: SharedAppConfig)
-  extends Validator[DeleteDividendsRequest] {
+class DeleteDividendsValidator @Inject(nino: String, taxYear: String) (implicit appConfig: SharedAppConfig)
+    extends Validator[DeleteDividendsRequest] {
 
   private lazy val minimumTaxYear = appConfig.minimumPermittedTaxYear
   private lazy val resolveTaxYear = ResolveTaxYearMinimum(minimumTaxYear)

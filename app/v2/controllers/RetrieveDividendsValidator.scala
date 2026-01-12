@@ -27,8 +27,8 @@ import v2.models.request.retrieveDividends.RetrieveDividendsRequest
 
 import javax.inject.Inject
 
-class RetrieveDividendsValidator @Inject (nino: String, taxYear: String)(implicit appConfig: SharedAppConfig)
-  extends Validator[RetrieveDividendsRequest] {
+class RetrieveDividendsValidator @Inject(nino: String, taxYear: String) (implicit appConfig: SharedAppConfig)
+    extends Validator[RetrieveDividendsRequest] {
 
   private lazy val minimumTaxYear = appConfig.minimumPermittedTaxYear
   private lazy val resolveTaxYear = ResolveTaxYearMinimum(minimumTaxYear)

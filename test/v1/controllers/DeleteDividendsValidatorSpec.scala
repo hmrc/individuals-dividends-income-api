@@ -24,6 +24,7 @@ import shared.utils.UnitSpec
 import v1.models.request.deleteDividends.DeleteDividendsRequest
 
 class DeleteDividendsValidatorSpec extends UnitSpec with OneInstancePerTest with MockSharedAppConfig {
+
   MockedSharedAppConfig.minimumPermittedTaxYear
     .returns(TaxYear.ending(2020))
     .anyNumberOfTimes()
