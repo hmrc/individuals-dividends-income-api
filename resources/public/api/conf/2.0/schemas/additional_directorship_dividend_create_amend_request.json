@@ -16,7 +16,7 @@
     },
     "directorshipCeasedDate": {
       "type": "string",
-      "description": "Date when the directorship ceased. This will cease the rollover across tax years for custom employments that were created for Additional Dividends and Directorship. Must conform to the format YYYY-MM-DD",
+      "description": "Date when the directorship ceased. This will cease the rollover across tax years for custom employments that were created for Additional Dividends and Directorship. Must conform to the format `YYYY-MM-DD`",
       "format": "date",
       "example": "2025-07-01"
     },
