@@ -23,7 +23,7 @@
     "companyName": {
       "type": "string",
       "description": "The name by which the company is registered with Companies House. This field is always returned when closeCompany is true.",
-      "example": "Comapny One",
+      "example": "Company One",
       "pattern": "^.{0,160}$"
     },
     "companyNumber": {
