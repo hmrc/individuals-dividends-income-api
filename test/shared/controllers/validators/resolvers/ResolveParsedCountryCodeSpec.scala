@@ -74,7 +74,7 @@ class ResolveParsedCountryCodeSpec extends UnitSpec {
       result shouldBe Invalid(List(CountryCodeFormatError.withPath("path")))
     }
 
-    "return a CountryCodeFormatError for an invalid rule country code" in {
+    "return a RuleCountryCodeError for an unpermitted country code" in {
       val result = ResolveParsedCountryCode("FRE", path = "path")
       result shouldBe Invalid(List(RuleCountryCodeError.withPath("path")))
     }
