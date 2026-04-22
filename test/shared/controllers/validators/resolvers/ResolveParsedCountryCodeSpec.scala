@@ -85,4 +85,5 @@ class ResolveParsedCountryCodeSpec extends UnitSpec {
       result shouldBe Invalid(List(RuleCountryCodeError.withPath("path")))
     }
   }
+
 }
