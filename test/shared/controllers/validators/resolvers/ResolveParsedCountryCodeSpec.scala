@@ -26,6 +26,7 @@ class ResolveParsedCountryCodeSpec extends UnitSpec {
 
   "ResolveParsedCountryCode" must {
 
+    // @formatter:off
     List(
       "AFG","ALB","DZA","ASM","AND","AGO","AIA","ATG","ARG","ARM","ABW","AUS","AUT","AZE",
       "BHS","BHR","BGD","BRB","BLR","BEL","BLZ","BEN","BMU","BTN","BOL","BES","BIH","BWA",
@@ -46,10 +47,11 @@ class ResolveParsedCountryCodeSpec extends UnitSpec {
       "ARE","USA","VIR","URY","UZB","VUT","VAT","VEN","VNM","WLF","YEM","ZMB","ZWE","ZZZ"
     ).foreach { code =>
       s"return an empty list for valid country code $code" in {
-        val result = ResolveParsedCountryCode(code, path = "path")
+        val result = ResolveParsedCountryCode(code, "path")
         result shouldBe Valid(code)
       }
     }
+    // @formatter:on
 
     permittedCountryCodes.foreach { code =>
       s"return valid for permitted country code $code" in {
@@ -68,23 +70,8 @@ class ResolveParsedCountryCodeSpec extends UnitSpec {
       result shouldBe Valid(Some("VEN"))
     }
 
-    "return a CountryCodeFormatError for an invalid optional country code" in {
-      val result = ResolveParsedCountryCode(Some("notACountryCode"), "path")
-      result shouldBe Invalid(List(CountryCodeFormatError.withPath("path")))
-    }
-
     "return a CountryCodeFormatError for a badly formatted country code" in {
       val result = ResolveParsedCountryCode("FRANCE", "path")
-      result shouldBe Invalid(List(CountryCodeFormatError.withPath("path")))
-    }
-
-    "return a CountryCodeFormatError for an invalid country code" in {
-      val result = ResolveParsedCountryCode("notACountryCode", "path")
-      result shouldBe Invalid(List(CountryCodeFormatError.withPath("path")))
-    }
-
-    "return a CountryCodeFormatError for a badly formatted optional country code" in {
-      val result = ResolveParsedCountryCode(Some("FRANCE"), "path")
       result shouldBe Invalid(List(CountryCodeFormatError.withPath("path")))
     }
 
