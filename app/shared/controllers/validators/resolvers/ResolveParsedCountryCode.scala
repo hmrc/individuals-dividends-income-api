@@ -33,17 +33,15 @@ case class ResolveParsedCountryCode(path: String) {
       Valid(value)
 
     } else {
-      // POC behaviour: NO ISO lookup fallback
       Invalid(List(RuleCountryCodeError.withPath(path)))
     }
   }
 
-  def apply(maybeValue: Option[String]): Validated[List[MtdError], Option[String]] =
+  def apply(maybeValue: Option[String], path: String): Validated[List[MtdError], Option[String]] =
     maybeValue match {
-      case Some(value) => apply(value).map(Some(_))
+      case Some(value) => apply(value).map(Option(_))
       case None        => Valid(None)
     }
-
 }
 
 object ResolveParsedCountryCode {
@@ -293,8 +291,4 @@ object ResolveParsedCountryCode {
 
   def apply(value: String, path: String): Validated[Seq[MtdError], String] =
     ResolveParsedCountryCode(path)(value)
-
-  def apply(maybeValue: Option[String], path: String): Validated[Seq[MtdError], Option[String]] =
-    ResolveParsedCountryCode(path)(maybeValue)
-
-}
+  }
