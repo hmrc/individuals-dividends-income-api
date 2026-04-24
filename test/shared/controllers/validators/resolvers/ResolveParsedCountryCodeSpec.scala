@@ -25,7 +25,6 @@ class ResolveParsedCountryCodeSpec extends UnitSpec {
   private val permittedCountryCodes = ResolveParsedCountryCode.permittedCodes.toSeq.sorted
 
   "ResolveParsedCountryCode" must {
-
     permittedCountryCodes.foreach { code =>
       s"return valid for permitted country code $code" in {
         val result = ResolveParsedCountryCode(code, "path")
@@ -45,6 +44,11 @@ class ResolveParsedCountryCodeSpec extends UnitSpec {
 
     "return a CountryCodeFormatError for a badly formatted country code" in {
       val result = ResolveParsedCountryCode("FRANCE", "path")
+      result shouldBe Invalid(List(CountryCodeFormatError.withPath("path")))
+    }
+
+    "return a CountryCodeFormatError for a badly formatted optional country code" in {
+      val result = ResolveParsedCountryCode(Some("FRANCE"), "path")
       result shouldBe Invalid(List(CountryCodeFormatError.withPath("path")))
     }
 
