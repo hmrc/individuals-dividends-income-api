@@ -29,24 +29,25 @@ class ResolveStringPatternSpec extends UnitSpec {
 
   "ResolveStringPattern" should {
     "return no errors" when {
+
       "given a matching string" in {
         val result = resolveTaxYearPattern("2024-25")
-        result shouldBe Valid("2024-25")
+        result.shouldBe(Valid("2024-25"))
       }
 
       "given a matching string in an Option" in {
-        val result = resolveTaxYearPattern(Option("2024-25"))
-        result shouldBe Valid(Some("2024-25"))
+        val result = resolveTaxYearPattern(Some("2024-25"))
+        result.shouldBe(Valid(Some("2024-25")))
       }
 
       "given an empty Option" in {
         val result = resolveTaxYearPattern(None)
-        result shouldBe Valid(None)
+        result.shouldBe(Valid(None))
       }
 
       "given a matching string via the legacy apply() function" in {
-        val result = ResolveStringPattern("2024-25", taxYearRegex, TaxYearFormatError)
-        result shouldBe Valid("2024-25")
+        val result = ResolveStringPattern(Some("2024-25"), taxYearRegex, TaxYearFormatError)
+        result.shouldBe(Valid(Some("2024-25")))
       }
     }
 
@@ -56,7 +57,50 @@ class ResolveStringPatternSpec extends UnitSpec {
         result shouldBe Invalid(List(TaxYearFormatError))
       }
     }
+    "given a non-matching string" in {
+      val result = resolveTaxYearPattern("does-not-match-regex")
+      result.shouldBe(Invalid(List(TaxYearFormatError)))
+    }
 
+    "given a non-matching string in an Option" in {
+      val result = resolveTaxYearPattern(Some("does-not-match-regex"))
+      result.shouldBe(Invalid(List(TaxYearFormatError)))
+    }
+
+    "given a non-matching string via legacy apply()" in {
+      val result = ResolveStringPattern(Some("does-not-match-regex"), taxYearRegex, TaxYearFormatError)
+      result.shouldBe(Invalid(List(TaxYearFormatError)))
+    }
+
+    "given an empty string" in {
+      val result = resolveTaxYearPattern("")
+      result.shouldBe(Invalid(List(TaxYearFormatError)))
+    }
+
+    "given an empty string in an Option" in {
+      val result = resolveTaxYearPattern(Some(""))
+      result.shouldBe(Invalid(List(TaxYearFormatError)))
+    }
+
+    "given an empty string via legacy apply()" in {
+      val result = ResolveStringPattern(Some(""), taxYearRegex, TaxYearFormatError)
+      result.shouldBe(Invalid(List(TaxYearFormatError)))
+    }
+
+    "given a string with only spaces" in {
+      val result = resolveTaxYearPattern("   ")
+      result.shouldBe(Invalid(List(TaxYearFormatError)))
+    }
+
+    "given a string with only spaces in an Option" in {
+      val result = resolveTaxYearPattern(Some("   "))
+      result.shouldBe(Invalid(List(TaxYearFormatError)))
+    }
+
+    "given a string with only spaces via legacy apply()" in {
+      val result = ResolveStringPattern(Some("   "), taxYearRegex, TaxYearFormatError)
+      result.shouldBe(Invalid(List(TaxYearFormatError)))
+    }
   }
 
 }
