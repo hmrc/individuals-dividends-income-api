@@ -22,13 +22,13 @@ import common.errors.CustomerRefFormatError
 import shared.controllers.validators.RulesValidator
 import shared.controllers.validators.resolvers.{ResolveParsedCountryCode, ResolveParsedNumber, ResolveStringPattern}
 import shared.models.errors.MtdError
-import v2.models.request.createAmendDividends._
+import v2.models.request.createAmendDividends.*
 
 object CreateAmendDividendsRulesValidator extends RulesValidator[CreateAmendDividendsRequest] {
 
   private val resolveParsedNumber: ResolveParsedNumber = ResolveParsedNumber()
 
-  private val stringRegex = "^[0-9a-zA-Z{À-˿’}\\- _&`():.'^]{1,90}$".r
+  private val customerReferenceRegex = "^[0-9a-zA-Z{À-˿’}\\- _&`():.'^]{1,90}$".r
 
   override def validateBusinessRules(parsed: CreateAmendDividendsRequest): Validated[Seq[MtdError], CreateAmendDividendsRequest] = {
     import parsed.body._
@@ -43,7 +43,6 @@ object CreateAmendDividendsRulesValidator extends RulesValidator[CreateAmendDivi
       bonusIssuesOfSecurities.traverse(validateCommonDividends(_, "bonusIssuesOfSecurities")),
       closeCompanyLoansWrittenOff.traverse(validateCommonDividends(_, "closeCompanyLoansWrittenOff"))
     ).onSuccess(parsed)
-
   }
 
   private def validateForeignDividend(foreignDividend: CreateAmendForeignDividendItem, arrayIndex: Int): Validated[Seq[MtdError], Unit] = {
@@ -75,12 +74,8 @@ object CreateAmendDividendsRulesValidator extends RulesValidator[CreateAmendDivi
     import commonDividends._
 
     combine(
-      resolveStringByPattern(customerReference, CustomerRefFormatError.withPath(s"/$fieldName/customerReference")),
+      ResolveStringPattern(customerReference, customerReferenceRegex, CustomerRefFormatError.withPath(s"/$fieldName/customerReference")),
       resolveParsedNumber(grossAmount, s"/$fieldName/grossAmount")
     )
   }
-
-  private def resolveStringByPattern(value: Option[String], error: MtdError): Validated[Seq[MtdError], Option[String]] =
-    ResolveStringPattern(value, stringRegex, error)
-
 }
