@@ -78,4 +78,5 @@ object CreateAmendDividendsRulesValidator extends RulesValidator[CreateAmendDivi
       resolveParsedNumber(grossAmount, s"/$fieldName/grossAmount")
     )
   }
+
 }
