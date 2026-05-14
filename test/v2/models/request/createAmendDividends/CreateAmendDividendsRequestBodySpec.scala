@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -200,7 +200,11 @@ class CreateAmendDividendsRequestBodySpec extends UnitSpec {
         """.stripMargin
         )
 
-        json.as[CreateAmendDividendsRequestBody] shouldBe CreateAmendDividendsRequestBody.empty
+        json.as[CreateAmendDividendsRequestBody] shouldBe
+          CreateAmendDividendsRequestBody.empty.copy(
+            foreignDividend = Some(Seq.empty),
+            dividendIncomeReceivedWhilstAbroad = Some(Seq.empty)
+          )
       }
     }
 

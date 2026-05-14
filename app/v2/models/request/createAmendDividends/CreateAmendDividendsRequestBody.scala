@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,6 @@ package v2.models.request.createAmendDividends
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsPath, OWrites, Reads}
-import utils.JsonUtils
 
 case class CreateAmendDividendsRequestBody(foreignDividend: Option[Seq[CreateAmendForeignDividendItem]],
                                            dividendIncomeReceivedWhilstAbroad: Option[Seq[CreateAmendDividendIncomeReceivedWhilstAbroadItem]],
@@ -27,12 +26,12 @@ case class CreateAmendDividendsRequestBody(foreignDividend: Option[Seq[CreateAme
                                            bonusIssuesOfSecurities: Option[CreateAmendCommonDividends],
                                            closeCompanyLoansWrittenOff: Option[CreateAmendCommonDividends])
 
-object CreateAmendDividendsRequestBody extends JsonUtils {
+object CreateAmendDividendsRequestBody {
   val empty: CreateAmendDividendsRequestBody = CreateAmendDividendsRequestBody(None, None, None, None, None, None)
 
   implicit val reads: Reads[CreateAmendDividendsRequestBody] = (
-    (JsPath \ "foreignDividend").readNullable[Seq[CreateAmendForeignDividendItem]].mapEmptySeqToNone and
-      (JsPath \ "dividendIncomeReceivedWhilstAbroad").readNullable[Seq[CreateAmendDividendIncomeReceivedWhilstAbroadItem]].mapEmptySeqToNone and
+    (JsPath \ "foreignDividend").readNullable[Seq[CreateAmendForeignDividendItem]] and
+      (JsPath \ "dividendIncomeReceivedWhilstAbroad").readNullable[Seq[CreateAmendDividendIncomeReceivedWhilstAbroadItem]] and
       (JsPath \ "stockDividend").readNullable[CreateAmendCommonDividends] and
       (JsPath \ "redeemableShares").readNullable[CreateAmendCommonDividends] and
       (JsPath \ "bonusIssuesOfSecurities").readNullable[CreateAmendCommonDividends] and
