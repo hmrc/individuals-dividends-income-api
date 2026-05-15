@@ -16,8 +16,7 @@
 
 package v2.models.request.createAmendDividends
 
-import play.api.libs.functional.syntax._
-import play.api.libs.json.{JsPath, OWrites, Reads}
+import play.api.libs.json.*
 
 case class CreateAmendDividendsRequestBody(foreignDividend: Option[Seq[CreateAmendForeignDividendItem]],
                                            dividendIncomeReceivedWhilstAbroad: Option[Seq[CreateAmendDividendIncomeReceivedWhilstAbroadItem]],
@@ -27,24 +26,7 @@ case class CreateAmendDividendsRequestBody(foreignDividend: Option[Seq[CreateAme
                                            closeCompanyLoansWrittenOff: Option[CreateAmendCommonDividends])
 
 object CreateAmendDividendsRequestBody {
-  val empty: CreateAmendDividendsRequestBody = CreateAmendDividendsRequestBody(None, None, None, None, None, None)
 
-  implicit val reads: Reads[CreateAmendDividendsRequestBody] = (
-    (JsPath \ "foreignDividend").readNullable[Seq[CreateAmendForeignDividendItem]] and
-      (JsPath \ "dividendIncomeReceivedWhilstAbroad").readNullable[Seq[CreateAmendDividendIncomeReceivedWhilstAbroadItem]] and
-      (JsPath \ "stockDividend").readNullable[CreateAmendCommonDividends] and
-      (JsPath \ "redeemableShares").readNullable[CreateAmendCommonDividends] and
-      (JsPath \ "bonusIssuesOfSecurities").readNullable[CreateAmendCommonDividends] and
-      (JsPath \ "closeCompanyLoansWrittenOff").readNullable[CreateAmendCommonDividends]
-  )(CreateAmendDividendsRequestBody.apply)
-
-  implicit val writes: OWrites[CreateAmendDividendsRequestBody] = (
-    (JsPath \ "foreignDividend").writeNullable[Seq[CreateAmendForeignDividendItem]] and
-      (JsPath \ "dividendIncomeReceivedWhilstAbroad").writeNullable[Seq[CreateAmendDividendIncomeReceivedWhilstAbroadItem]] and
-      (JsPath \ "stockDividend").writeNullable[CreateAmendCommonDividends] and
-      (JsPath \ "redeemableShares").writeNullable[CreateAmendCommonDividends] and
-      (JsPath \ "bonusIssuesOfSecurities").writeNullable[CreateAmendCommonDividends] and
-      (JsPath \ "closeCompanyLoansWrittenOff").writeNullable[CreateAmendCommonDividends]
-  )(w => Tuple.fromProductTyped(w))
+  implicit val format: OFormat[CreateAmendDividendsRequestBody] = Json.format[CreateAmendDividendsRequestBody]
 
 }

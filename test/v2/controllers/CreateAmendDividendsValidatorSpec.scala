@@ -624,7 +624,7 @@ class CreateAmendDividendsValidatorSpec extends UnitSpec with OneInstancePerTest
 
       }
 
-      "the submitted request body contains empty objects" in {
+      "the submitted request body contains empty arrays" in {
         val result: Either[ErrorWrapper, CreateAmendDividendsRequest] =
           validator(validNino, validTaxYear, emptyArrayJson).validateAndWrapResult()
 

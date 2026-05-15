@@ -166,6 +166,8 @@ class CreateAmendDividendsRequestBodySpec extends UnitSpec {
     Some(closeCompanyLoansWrittenOff)
   )
 
+  private val emptyRequestBodyModel: CreateAmendDividendsRequestBody = CreateAmendDividendsRequestBody(None, None, None, None, None, None)
+
   "CreateAmendDividendsRequestBody" when {
     "read from valid JSON" should {
       "produce the expected CreateAmendDividendsRequestBody object" in {
@@ -185,12 +187,12 @@ class CreateAmendDividendsRequestBodySpec extends UnitSpec {
       "produce an empty CreateAmendDividendsRequestBody object" in {
         val emptyJson = JsObject.empty
 
-        emptyJson.as[CreateAmendDividendsRequestBody] shouldBe CreateAmendDividendsRequestBody.empty
+        emptyJson.as[CreateAmendDividendsRequestBody] shouldBe emptyRequestBodyModel
       }
     }
 
     "read from valid JSON with empty foreignDividend and dividendIncomeReceivedWhilstAbroad arrays" should {
-      "produce an empty CreateAmendDividendsRequestBody object" in {
+      "preserve the empty arrays" in {
         val json = Json.parse(
           """
             |{
@@ -201,7 +203,7 @@ class CreateAmendDividendsRequestBodySpec extends UnitSpec {
         )
 
         json.as[CreateAmendDividendsRequestBody] shouldBe
-          CreateAmendDividendsRequestBody.empty.copy(
+          emptyRequestBodyModel.copy(
             foreignDividend = Some(Seq.empty),
             dividendIncomeReceivedWhilstAbroad = Some(Seq.empty)
           )
