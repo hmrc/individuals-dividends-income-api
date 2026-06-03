@@ -16,11 +16,11 @@
 
 package v2.controllers
 
+import api.config.SharedAppConfig
+import api.controllers.*
+import api.services.{EnrolmentsAuthService, MtdIdLookupService}
+import api.utils.IdGenerator
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
-import shared.config.SharedAppConfig
-import shared.controllers._
-import shared.services.{EnrolmentsAuthService, MtdIdLookupService}
-import shared.utils.IdGenerator
 import v2.services.RetrieveUkDividendsIncomeAnnualSummaryService
 
 import javax.inject.{Inject, Singleton}

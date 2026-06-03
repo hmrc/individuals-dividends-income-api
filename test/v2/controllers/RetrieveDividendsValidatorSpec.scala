@@ -16,11 +16,11 @@
 
 package v2.controllers
 
+import api.config.MockSharedAppConfig
+import api.models.domain.{Nino, TaxYear}
+import api.models.errors.*
+import api.utils.UnitSpec
 import org.scalatest.OneInstancePerTest
-import shared.config.MockSharedAppConfig
-import shared.models.domain.{Nino, TaxYear}
-import shared.models.errors.*
-import shared.utils.UnitSpec
 import v2.models.request.retrieveDividends.RetrieveDividendsRequest
 
 class RetrieveDividendsValidatorSpec extends UnitSpec with OneInstancePerTest with MockSharedAppConfig {

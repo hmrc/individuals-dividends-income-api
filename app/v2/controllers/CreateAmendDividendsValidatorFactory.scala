@@ -16,9 +16,9 @@
 
 package v2.controllers
 
+import api.config.SharedAppConfig
+import api.controllers.validators.Validator
 import play.api.libs.json.JsValue
-import shared.config.SharedAppConfig
-import shared.controllers.validators.Validator
 import v2.models.request.createAmendDividends.CreateAmendDividendsRequest
 
 import javax.inject.{Inject, Singleton}

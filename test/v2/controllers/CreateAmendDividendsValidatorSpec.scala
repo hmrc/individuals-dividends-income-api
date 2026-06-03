@@ -16,13 +16,13 @@
 
 package v2.controllers
 
+import api.config.MockSharedAppConfig
+import api.models.domain.{Nino, TaxYear}
+import api.models.errors.*
+import api.utils.UnitSpec
 import common.errors.CustomerRefFormatError
 import org.scalatest.OneInstancePerTest
 import play.api.libs.json.{JsValue, Json}
-import shared.config.MockSharedAppConfig
-import shared.models.domain.{Nino, TaxYear}
-import shared.models.errors.*
-import shared.utils.UnitSpec
 import v2.models.request.createAmendDividends.*
 
 class CreateAmendDividendsValidatorSpec extends UnitSpec with OneInstancePerTest with MockSharedAppConfig {

@@ -16,13 +16,13 @@
 
 package v2.connectors
 
-import shared.connectors.{ConnectorSpec, DownstreamOutcome}
-import shared.models.domain.{EmploymentId, Nino, TaxYear}
-import shared.models.errors.{DownstreamErrorCode, DownstreamErrors}
-import shared.models.outcomes.ResponseWrapper
-import v2.fixtures.CreateAmendAdditionalDirectorshipDividendFixtures.minimumRequestBodyModel
-import v2.models.request.createAmendAdditionalDirectorshipDividend._
+import api.connectors.{ConnectorSpec, DownstreamOutcome}
+import api.models.domain.{EmploymentId, Nino, TaxYear}
+import api.models.errors.{DownstreamErrorCode, DownstreamErrors}
+import api.models.outcomes.ResponseWrapper
 import uk.gov.hmrc.http.StringContextOps
+import v2.fixtures.CreateAmendAdditionalDirectorshipDividendFixtures.minimumRequestBodyModel
+import v2.models.request.createAmendAdditionalDirectorshipDividend.*
 
 import scala.concurrent.Future
 

@@ -16,8 +16,8 @@
 
 package v2.controllers
 
-import shared.config.SharedAppConfig
-import shared.controllers.validators.Validator
+import api.config.SharedAppConfig
+import api.controllers.validators.Validator
 import v2.models.request.retrieveDividends.RetrieveDividendsRequest
 
 import javax.inject.Inject

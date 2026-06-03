@@ -16,11 +16,11 @@
 
 package v2.controllers
 
-import play.api.mvc._
-import shared.config.SharedAppConfig
-import shared.controllers._
-import shared.services._
-import shared.utils.IdGenerator
+import api.config.SharedAppConfig
+import api.controllers.*
+import api.services.*
+import api.utils.IdGenerator
+import play.api.mvc.*
 import v2.services.RetrieveAdditionalDirectorshipDividendService
 
 import javax.inject.{Inject, Singleton}

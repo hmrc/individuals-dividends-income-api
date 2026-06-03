@@ -16,12 +16,13 @@
 
 package v2.connectors
 
-import shared.connectors.ConnectorSpec
-import shared.models.domain.{Nino, TaxYear}
-import shared.models.outcomes.ResponseWrapper
+import api.connectors.ConnectorSpec
+import api.models.domain.{Nino, TaxYear}
+import api.models.outcomes.ResponseWrapper
+import uk.gov.hmrc.http.StringContextOps
 import v2.fixtures.RetrieveDividendsFixtures.responseModel
 import v2.models.request.retrieveDividends.RetrieveDividendsRequest
-import uk.gov.hmrc.http.StringContextOps
+import v2.models.response.retrieveDividends.RetrieveDividendsResponse
 
 import scala.concurrent.Future
 
@@ -58,7 +59,7 @@ class RetrieveDividendsConnectorSpec extends ConnectorSpec {
 
     lazy val request: RetrieveDividendsRequest = RetrieveDividendsRequest(Nino("AA111111A"), TaxYear.fromMtd(taxYear))
 
-    val outcome = Right(ResponseWrapper(correlationId, responseModel))
+    val outcome: Right[Nothing, ResponseWrapper[RetrieveDividendsResponse]] = Right(ResponseWrapper(correlationId, responseModel))
 
   }
 

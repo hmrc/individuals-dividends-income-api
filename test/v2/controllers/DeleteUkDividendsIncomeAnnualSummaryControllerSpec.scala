@@ -16,16 +16,16 @@
 
 package v2.controllers
 
+import api.config.MockSharedAppConfig
+import api.controllers.{ControllerBaseSpec, ControllerTestRunner}
+import api.models.audit.{AuditEvent, AuditResponse, FlattenedGenericAuditDetail}
+import api.models.auth.UserDetails
+import api.models.domain.{Nino, TaxYear}
+import api.models.errors.*
+import api.models.outcomes.ResponseWrapper
 import play.api.Configuration
 import play.api.libs.json.JsValue
 import play.api.mvc.Result
-import shared.config.MockSharedAppConfig
-import shared.controllers.{ControllerBaseSpec, ControllerTestRunner}
-import shared.models.audit.{AuditEvent, AuditResponse, FlattenedGenericAuditDetail}
-import shared.models.auth.UserDetails
-import shared.models.domain.{Nino, TaxYear}
-import shared.models.errors._
-import shared.models.outcomes.ResponseWrapper
 import v2.mocks.services.MockDeleteUkDividendsIncomeAnnualSummaryService
 import v2.mocks.validators.MockDeleteUkDividendsIncomeAnnualSummaryValidatorFactory
 import v2.models.request.deleteUkDividendsIncomeAnnualSummary.DeleteUkDividendsIncomeAnnualSummaryRequest
