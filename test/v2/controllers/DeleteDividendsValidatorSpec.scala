@@ -16,16 +16,16 @@
 
 package v2.controllers
 
-import api.config.MockSharedAppConfig
+import api.config.MockAppConfig
 import api.models.domain.{Nino, TaxYear}
 import api.models.errors.*
 import api.utils.UnitSpec
 import org.scalatest.OneInstancePerTest
 import v2.models.request.deleteDividends.DeleteDividendsRequest
 
-class DeleteDividendsValidatorSpec extends UnitSpec with OneInstancePerTest with MockSharedAppConfig {
+class DeleteDividendsValidatorSpec extends UnitSpec with OneInstancePerTest with MockAppConfig {
 
-  MockedSharedAppConfig.minimumPermittedTaxYear
+  MockedAppConfig.minimumPermittedTaxYear
     .returns(TaxYear.ending(2020))
     .anyNumberOfTimes()
 

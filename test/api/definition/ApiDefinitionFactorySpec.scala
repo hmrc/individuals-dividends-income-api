@@ -17,7 +17,7 @@
 package api.definition
 
 import api.config.Deprecation.NotDeprecated
-import api.config.{MockSharedAppConfig, SharedAppConfig}
+import api.config.{AppConfig, MockAppConfig}
 import api.definition.APIStatus.{ALPHA, BETA}
 import api.mocks.MockHttpClient
 import api.routing.*
@@ -34,7 +34,7 @@ class ApiDefinitionFactorySpec extends UnitSpec {
 
       s"return the expected status" in new Test {
         setupMockConfig(Version9)
-        MockedSharedAppConfig.apiStatus(Version9) returns "BETA"
+        MockedAppConfig.apiStatus(Version9) returns "BETA"
 
         val result: APIStatus = checkBuildApiStatus(Version9)
         result shouldBe BETA
@@ -45,7 +45,7 @@ class ApiDefinitionFactorySpec extends UnitSpec {
     "the 'apiStatus' parameter is present but invalid" should {
       s"default to alpha" in new Test {
         setupMockConfig(Version9)
-        MockedSharedAppConfig.apiStatus(Version9) returns "not-a-status"
+        MockedAppConfig.apiStatus(Version9) returns "not-a-status"
 
         checkBuildApiStatus(Version9) shouldBe ALPHA
       }
@@ -53,9 +53,9 @@ class ApiDefinitionFactorySpec extends UnitSpec {
 
     "the 'deprecatedOn' parameter is missing for a deprecated version" should {
       "throw an exception" in new Test {
-        MockedSharedAppConfig.apiStatus(Version9) returns "DEPRECATED"
+        MockedAppConfig.apiStatus(Version9) returns "DEPRECATED"
 
-        MockedSharedAppConfig
+        MockedAppConfig
           .deprecationFor(Version9)
           .returns("deprecatedOn date is required for a deprecated version".invalid)
           .anyNumberOfTimes()
@@ -85,11 +85,11 @@ class ApiDefinitionFactorySpec extends UnitSpec {
     }
   }
 
-  trait Test extends UnitSpec with MockHttpClient with MockSharedAppConfig {
-    MockedSharedAppConfig.apiGatewayContext returns "individuals/dividends-income"
+  trait Test extends UnitSpec with MockHttpClient with MockAppConfig {
+    MockedAppConfig.apiGatewayContext returns "individuals/dividends-income"
 
     val apiDefinitionFactory: ApiDefinitionFactory = new ApiDefinitionFactory {
-      protected val appConfig: SharedAppConfig = mockSharedAppConfig
+      protected val appConfig: AppConfig = mockAppConfig
 
       val definition: Definition = Definition(
         APIDefinition(
@@ -106,7 +106,7 @@ class ApiDefinitionFactorySpec extends UnitSpec {
     def checkBuildApiStatus(version: Version): APIStatus = apiDefinitionFactory.buildAPIStatus(version)
 
     protected def setupMockConfig(version: Version): Unit = {
-      MockedSharedAppConfig
+      MockedAppConfig
         .deprecationFor(version)
         .returns(NotDeprecated.valid)
         .anyNumberOfTimes()

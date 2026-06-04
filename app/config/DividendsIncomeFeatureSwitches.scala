@@ -16,7 +16,7 @@
 
 package config
 
-import api.config.{FeatureSwitches, SharedAppConfig}
+import api.config.{AppConfig, FeatureSwitches}
 import play.api.Configuration
 
 case class DividendsIncomeFeatureSwitches private (protected val featureSwitchConfig: Configuration) extends FeatureSwitches {
@@ -25,5 +25,5 @@ case class DividendsIncomeFeatureSwitches private (protected val featureSwitchCo
 }
 
 object DividendsIncomeFeatureSwitches {
-  def apply()(implicit appConfig: SharedAppConfig): DividendsIncomeFeatureSwitches = DividendsIncomeFeatureSwitches(appConfig.featureSwitchConfig)
+  def apply()(implicit appConfig: AppConfig): DividendsIncomeFeatureSwitches = DividendsIncomeFeatureSwitches(appConfig.featureSwitchConfig)
 }

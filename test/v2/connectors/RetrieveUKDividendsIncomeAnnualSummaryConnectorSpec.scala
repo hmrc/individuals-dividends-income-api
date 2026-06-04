@@ -76,7 +76,7 @@ class RetrieveUKDividendsIncomeAnnualSummaryConnectorSpec extends ConnectorSpec 
     def taxYear: TaxYear
 
     protected val connector: RetrieveUKDividendsIncomeAnnualSummaryConnector =
-      new RetrieveUKDividendsIncomeAnnualSummaryConnector(http = mockHttpClient, appConfig = mockSharedAppConfig)
+      new RetrieveUKDividendsIncomeAnnualSummaryConnector(http = mockHttpClient, appConfig = mockAppConfig)
 
     protected val request: RetrieveUkDividendsIncomeAnnualSummaryRequest =
       RetrieveUkDividendsIncomeAnnualSummaryRequest(Nino("AA111111A"), taxYear = taxYear)

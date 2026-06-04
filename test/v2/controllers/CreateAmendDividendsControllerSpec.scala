@@ -16,7 +16,7 @@
 
 package v2.controllers
 
-import api.config.MockSharedAppConfig
+import api.config.MockAppConfig
 import api.controllers.{ControllerBaseSpec, ControllerTestRunner}
 import api.models.audit.{AuditEvent, AuditResponse, GenericAuditDetail}
 import api.models.domain.TaxYear
@@ -39,7 +39,7 @@ class CreateAmendDividendsControllerSpec
     with ControllerTestRunner
     with MockEnrolmentsAuthService
     with MockMtdIdLookupService
-    with MockSharedAppConfig
+    with MockAppConfig
     with MockAuditService
     with MockCreateAmendDividendsService
     with MockCreateAmendDividendsValidatorFactory
@@ -182,7 +182,7 @@ class CreateAmendDividendsControllerSpec
   "CreateAmendDividendsController" should {
     "return a successful response with status OK" when {
       "happy path" in new Test {
-        MockedSharedAppConfig.apiGatewayContext.returns("individuals/dividends-income").anyNumberOfTimes()
+        MockedAppConfig.apiGatewayContext.returns("individuals/dividends-income").anyNumberOfTimes()
 
         willUseValidator(returningSuccess(requestData))
 
@@ -229,11 +229,11 @@ class CreateAmendDividendsControllerSpec
       idGenerator = mockIdGenerator
     )
 
-    MockedSharedAppConfig.featureSwitchConfig.anyNumberOfTimes() returns Configuration(
+    MockedAppConfig.featureSwitchConfig.anyNumberOfTimes() returns Configuration(
       "supporting-agents-access-control.enabled" -> true
     )
 
-    MockedSharedAppConfig.endpointAllowsSupportingAgents(controller.endpointName).anyNumberOfTimes() returns false
+    MockedAppConfig.endpointAllowsSupportingAgents(controller.endpointName).anyNumberOfTimes() returns false
 
     protected def callController(): Future[Result] = controller.createAmendDividends(validNino, taxYear)(fakeRequest.withBody(validRequestJson))
 

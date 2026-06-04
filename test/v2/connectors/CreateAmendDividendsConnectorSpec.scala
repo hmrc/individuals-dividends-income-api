@@ -41,7 +41,7 @@ class CreateAmendDividendsConnectorSpec extends ConnectorSpec {
 
     val connector: CreateAmendDividendsConnector = new CreateAmendDividendsConnector(
       http = mockHttpClient,
-      appConfig = mockSharedAppConfig
+      appConfig = mockAppConfig
     )
 
     val outcome: Right[Nothing, ResponseWrapper[Unit]] = Right(ResponseWrapper(correlationId, ()))

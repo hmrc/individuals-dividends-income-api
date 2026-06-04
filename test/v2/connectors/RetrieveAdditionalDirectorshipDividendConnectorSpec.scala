@@ -71,7 +71,7 @@ class RetrieveAdditionalDirectorshipDividendConnectorSpec extends ConnectorSpec 
   trait Test { self: ConnectorTest =>
 
     protected val connector: RetrieveAdditionalDirectorshipDividendConnector =
-      new RetrieveAdditionalDirectorshipDividendConnector(http = mockHttpClient, appConfig = mockSharedAppConfig)
+      new RetrieveAdditionalDirectorshipDividendConnector(http = mockHttpClient, appConfig = mockAppConfig)
 
     protected val request: RetrieveAdditionalDirectorshipDividendRequest = RetrieveAdditionalDirectorshipDividendRequest(
       nino = nino,

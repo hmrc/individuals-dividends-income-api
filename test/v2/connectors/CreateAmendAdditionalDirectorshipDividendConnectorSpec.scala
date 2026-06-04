@@ -69,7 +69,7 @@ class CreateAmendAdditionalDirectorshipDividendConnectorSpec extends ConnectorSp
   private trait Test { self: ConnectorTest =>
 
     protected val connector: CreateAmendAdditionalDirectorshipDividendConnector =
-      new CreateAmendAdditionalDirectorshipDividendConnector(http = mockHttpClient, appConfig = mockSharedAppConfig)
+      new CreateAmendAdditionalDirectorshipDividendConnector(http = mockHttpClient, appConfig = mockAppConfig)
 
     protected val request: CreateAmendAdditionalDirectorshipDividendRequest = CreateAmendAdditionalDirectorshipDividendRequest(
       nino = nino,

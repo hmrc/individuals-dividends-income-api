@@ -40,7 +40,7 @@ class DeleteUkDividendsIncomeAnnualSummaryConnectorSpec extends ConnectorSpec {
           body = Json.parse("""{}""")
         ).returns(Future.successful(outcome))
 
-        MockedSharedAppConfig.featureSwitchConfig
+        MockedAppConfig.featureSwitchConfig
           .anyNumberOfTimes()
           .returns(
             Configuration(
@@ -60,7 +60,7 @@ class DeleteUkDividendsIncomeAnnualSummaryConnectorSpec extends ConnectorSpec {
           body = Json.parse("""{}""")
         ).returns(Future.successful(outcome))
 
-        MockedSharedAppConfig.featureSwitchConfig
+        MockedAppConfig.featureSwitchConfig
           .anyNumberOfTimes()
           .returns(
             Configuration(
@@ -78,7 +78,7 @@ class DeleteUkDividendsIncomeAnnualSummaryConnectorSpec extends ConnectorSpec {
         willDelete(url = url"$baseUrl/income-tax/${taxYear.asTysDownstream}/$nino/income-source/dividends/annual")
           .returns(Future.successful(outcome))
 
-        MockedSharedAppConfig.featureSwitchConfig
+        MockedAppConfig.featureSwitchConfig
           .anyNumberOfTimes()
           .returns(
             Configuration(
@@ -99,7 +99,7 @@ class DeleteUkDividendsIncomeAnnualSummaryConnectorSpec extends ConnectorSpec {
 
     val connector: DeleteUkDividendsIncomeAnnualSummaryConnector = new DeleteUkDividendsIncomeAnnualSummaryConnector(
       http = mockHttpClient,
-      appConfig = mockSharedAppConfig
+      appConfig = mockAppConfig
     )
 
   }

@@ -55,7 +55,7 @@ class RetrieveDividendsConnectorSpec extends ConnectorSpec {
 
     val taxYear: String
 
-    val connector: RetrieveDividendsConnector = new RetrieveDividendsConnector(http = mockHttpClient, appConfig = mockSharedAppConfig)
+    val connector: RetrieveDividendsConnector = new RetrieveDividendsConnector(http = mockHttpClient, appConfig = mockAppConfig)
 
     lazy val request: RetrieveDividendsRequest = RetrieveDividendsRequest(Nino("AA111111A"), TaxYear.fromMtd(taxYear))
 

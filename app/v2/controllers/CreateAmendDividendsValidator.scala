@@ -16,7 +16,7 @@
 
 package v2.controllers
 
-import api.config.SharedAppConfig
+import api.config.AppConfig
 import api.controllers.validators.Validator
 import api.controllers.validators.resolvers.{ResolveNino, ResolveNonEmptyJsonObject, ResolveTaxYearMinimum}
 import api.models.domain.TaxYear
@@ -28,7 +28,7 @@ import v2.models.request.createAmendDividends.*
 
 import javax.inject.Inject
 
-class CreateAmendDividendsValidator @Inject() (nino: String, taxYear: String, body: JsValue)(implicit appConfig: SharedAppConfig)
+class CreateAmendDividendsValidator @Inject() (nino: String, taxYear: String, body: JsValue)(implicit appConfig: AppConfig)
     extends Validator[CreateAmendDividendsRequest] {
 
   private val resolveJson = ResolveNonEmptyJsonObject.resolver[CreateAmendDividendsRequestBody]

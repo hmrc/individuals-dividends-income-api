@@ -70,7 +70,7 @@ class CreateAmendUkDividendsAnnualSummaryConnectorSpec extends ConnectorSpec {
     protected val connector: CreateAmendUkDividendsAnnualSummaryConnector =
       new CreateAmendUkDividendsAnnualSummaryConnector(
         http = mockHttpClient,
-        appConfig = mockSharedAppConfig
+        appConfig = mockAppConfig
       )
 
     protected val request: CreateAmendUkDividendsIncomeAnnualSummaryRequest =

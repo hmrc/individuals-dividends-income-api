@@ -61,7 +61,7 @@ class DeleteDividendsConnectorSpec extends ConnectorSpec {
     protected val connector: DeleteDividendsConnector =
       new DeleteDividendsConnector(
         http = mockHttpClient,
-        appConfig = mockSharedAppConfig
+        appConfig = mockAppConfig
       )
 
     protected val request: DeleteDividendsRequest =

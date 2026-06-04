@@ -16,7 +16,7 @@
 
 package v2.controllers
 
-import api.config.SharedAppConfig
+import api.config.AppConfig
 import api.controllers.*
 import api.routing.Version
 import api.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService}
@@ -28,14 +28,13 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext
 
 @Singleton
-class DeleteAdditionalDirectorshipDividendController @Inject() (
-    val authService: EnrolmentsAuthService,
-    val lookupService: MtdIdLookupService,
-    validatorFactory: DeleteAdditionalDirectorshipDividendValidatorFactory,
-    service: DeleteAdditionalDirectorshipDividendService,
-    auditService: AuditService,
-    cc: ControllerComponents,
-    val idGenerator: IdGenerator)(implicit ec: ExecutionContext, appConfig: SharedAppConfig)
+class DeleteAdditionalDirectorshipDividendController @Inject() (val authService: EnrolmentsAuthService,
+                                                                val lookupService: MtdIdLookupService,
+                                                                validatorFactory: DeleteAdditionalDirectorshipDividendValidatorFactory,
+                                                                service: DeleteAdditionalDirectorshipDividendService,
+                                                                auditService: AuditService,
+                                                                cc: ControllerComponents,
+                                                                val idGenerator: IdGenerator)(implicit ec: ExecutionContext, appConfig: AppConfig)
     extends AuthorisedController(cc) {
 
   val endpointName: String = "delete-additional-directorship-and-dividend-information"

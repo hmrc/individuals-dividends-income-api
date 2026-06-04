@@ -16,7 +16,7 @@
 
 package v2.controllers
 
-import api.config.MockSharedAppConfig
+import api.config.MockAppConfig
 import api.controllers.{ControllerBaseSpec, ControllerTestRunner}
 import api.models.audit.{AuditEvent, AuditResponse, FlattenedGenericAuditDetail}
 import api.models.auth.UserDetails
@@ -38,7 +38,7 @@ class CreateAmendUkDividendsAnnualSummaryControllerSpec
     with ControllerTestRunner
     with MockCreateAmendUkDividendsAnnualSummaryService
     with MockCreateAmendUkDividendsAnnualSummaryValidatorFactory
-    with MockSharedAppConfig {
+    with MockAppConfig {
 
   private val taxYear = "2019-20"
   private val mtdId   = "test-mtd-id"
@@ -98,11 +98,11 @@ class CreateAmendUkDividendsAnnualSummaryControllerSpec
       auditService = mockAuditService
     )
 
-    MockedSharedAppConfig.featureSwitchConfig.anyNumberOfTimes() returns Configuration(
+    MockedAppConfig.featureSwitchConfig.anyNumberOfTimes() returns Configuration(
       "supporting-agents-access-control.enabled" -> true
     )
 
-    MockedSharedAppConfig.endpointAllowsSupportingAgents(controller.endpointName).anyNumberOfTimes() returns false
+    MockedAppConfig.endpointAllowsSupportingAgents(controller.endpointName).anyNumberOfTimes() returns false
 
     protected def callController(): Future[Result] =
       controller.createAmendUkDividendsAnnualSummary(validNino, taxYear)(fakeRequest.withBody(requestJson))

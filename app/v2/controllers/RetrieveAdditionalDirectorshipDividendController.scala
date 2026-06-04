@@ -16,7 +16,7 @@
 
 package v2.controllers
 
-import api.config.SharedAppConfig
+import api.config.AppConfig
 import api.controllers.*
 import api.services.*
 import api.utils.IdGenerator
@@ -27,13 +27,12 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext
 
 @Singleton
-class RetrieveAdditionalDirectorshipDividendController @Inject() (
-    val authService: EnrolmentsAuthService,
-    val lookupService: MtdIdLookupService,
-    validatorFactory: RetrieveAdditionalDirectorshipDividendValidatorFactory,
-    service: RetrieveAdditionalDirectorshipDividendService,
-    cc: ControllerComponents,
-    val idGenerator: IdGenerator)(implicit ec: ExecutionContext, appConfig: SharedAppConfig)
+class RetrieveAdditionalDirectorshipDividendController @Inject() (val authService: EnrolmentsAuthService,
+                                                                  val lookupService: MtdIdLookupService,
+                                                                  validatorFactory: RetrieveAdditionalDirectorshipDividendValidatorFactory,
+                                                                  service: RetrieveAdditionalDirectorshipDividendService,
+                                                                  cc: ControllerComponents,
+                                                                  val idGenerator: IdGenerator)(implicit ec: ExecutionContext, appConfig: AppConfig)
     extends AuthorisedController(cc) {
 
   override val endpointName: String = "retrieve-additional-directorship-and-dividend-information"

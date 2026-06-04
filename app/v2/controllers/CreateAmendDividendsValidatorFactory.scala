@@ -16,7 +16,7 @@
 
 package v2.controllers
 
-import api.config.SharedAppConfig
+import api.config.AppConfig
 import api.controllers.validators.Validator
 import play.api.libs.json.JsValue
 import v2.models.request.createAmendDividends.CreateAmendDividendsRequest
@@ -24,7 +24,7 @@ import v2.models.request.createAmendDividends.CreateAmendDividendsRequest
 import javax.inject.{Inject, Singleton}
 
 @Singleton
-class CreateAmendDividendsValidatorFactory @Inject() (implicit appConfig: SharedAppConfig) {
+class CreateAmendDividendsValidatorFactory @Inject() (implicit appConfig: AppConfig) {
 
   def validator(nino: String, taxYear: String, body: JsValue): Validator[CreateAmendDividendsRequest] =
     new CreateAmendDividendsValidator(nino, taxYear, body)

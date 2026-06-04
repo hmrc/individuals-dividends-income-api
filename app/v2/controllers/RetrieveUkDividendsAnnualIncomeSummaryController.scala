@@ -16,7 +16,7 @@
 
 package v2.controllers
 
-import api.config.SharedAppConfig
+import api.config.AppConfig
 import api.controllers.*
 import api.services.{EnrolmentsAuthService, MtdIdLookupService}
 import api.utils.IdGenerator
@@ -27,13 +27,12 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext
 
 @Singleton
-class RetrieveUkDividendsAnnualIncomeSummaryController @Inject() (
-    val authService: EnrolmentsAuthService,
-    val lookupService: MtdIdLookupService,
-    validatorFactory: RetrieveUkDividendsIncomeAnnualSummaryValidatorFactory,
-    service: RetrieveUkDividendsIncomeAnnualSummaryService,
-    cc: ControllerComponents,
-    val idGenerator: IdGenerator)(implicit ec: ExecutionContext, appConfig: SharedAppConfig)
+class RetrieveUkDividendsAnnualIncomeSummaryController @Inject() (val authService: EnrolmentsAuthService,
+                                                                  val lookupService: MtdIdLookupService,
+                                                                  validatorFactory: RetrieveUkDividendsIncomeAnnualSummaryValidatorFactory,
+                                                                  service: RetrieveUkDividendsIncomeAnnualSummaryService,
+                                                                  cc: ControllerComponents,
+                                                                  val idGenerator: IdGenerator)(implicit ec: ExecutionContext, appConfig: AppConfig)
     extends AuthorisedController(cc) {
 
   val endpointName: String = "retrieve-uk-dividends-annual-income-summary"

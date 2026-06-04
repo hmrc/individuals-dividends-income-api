@@ -16,7 +16,7 @@
 
 package v2.controllers
 
-import api.config.SharedAppConfig
+import api.config.AppConfig
 import api.controllers.*
 import api.routing.Version
 import api.services.{AuditService, EnrolmentsAuthService, MtdIdLookupService}
@@ -29,14 +29,13 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext
 
 @Singleton
-class CreateAmendUkDividendsAnnualSummaryController @Inject() (
-    val authService: EnrolmentsAuthService,
-    val lookupService: MtdIdLookupService,
-    validatorFactory: CreateAmendUkDividendsIncomeAnnualSummaryValidatorFactory,
-    service: CreateAmendUkDividendsAnnualSummaryService,
-    auditService: AuditService,
-    cc: ControllerComponents,
-    val idGenerator: IdGenerator)(implicit ec: ExecutionContext, appConfig: SharedAppConfig)
+class CreateAmendUkDividendsAnnualSummaryController @Inject() (val authService: EnrolmentsAuthService,
+                                                               val lookupService: MtdIdLookupService,
+                                                               validatorFactory: CreateAmendUkDividendsIncomeAnnualSummaryValidatorFactory,
+                                                               service: CreateAmendUkDividendsAnnualSummaryService,
+                                                               auditService: AuditService,
+                                                               cc: ControllerComponents,
+                                                               val idGenerator: IdGenerator)(implicit ec: ExecutionContext, appConfig: AppConfig)
     extends AuthorisedController(cc) {
 
   val endpointName: String = "create-amend-uk-dividends-annual-summary"

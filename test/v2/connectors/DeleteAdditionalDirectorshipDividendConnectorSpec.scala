@@ -64,7 +64,7 @@ class DeleteAdditionalDirectorshipDividendConnectorSpec extends ConnectorSpec {
   trait Test { self: ConnectorTest =>
 
     protected val connector: DeleteAdditionalDirectorshipDividendConnector =
-      new DeleteAdditionalDirectorshipDividendConnector(http = mockHttpClient, appConfig = mockSharedAppConfig)
+      new DeleteAdditionalDirectorshipDividendConnector(http = mockHttpClient, appConfig = mockAppConfig)
 
     protected val request: DeleteAdditionalDirectorshipDividendRequest = DeleteAdditionalDirectorshipDividendRequest(
       nino = nino,
