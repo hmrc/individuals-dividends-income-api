@@ -1,5 +1,5 @@
 
-# Individuals Dividends Income Api
+# Individuals Dividends Income API
 
 [![Apache-2.0 license](http://img.shields.io/badge/license-Apache-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
 
@@ -19,7 +19,7 @@ Run the microservice from the console using: `sbt run` (starts on port 7763 by d
 Start the service manager profile:
 
 ```bash
-sm2 --start MTDFB_INDIVIDUALS_DIVIDENDS_INCOME
+sm2 -start MTDFB_INDIVIDUALS_DIVIDENDS_INCOME
 ```
 
 ## Run Tests
@@ -61,7 +61,7 @@ You can create a GitHub issue [here](https://github.com/hmrc/income-tax-mtd-chan
 
 ## API Reference / Documentation
 
-Available on the [HMRC Developer Hub](https://developer.service.hmrc.gov.uk/api-documentation/docs/api/service/individuals-other-income-api)
+Available on the [HMRC Developer Hub](https://developer.service.hmrc.gov.uk/api-documentation/docs/api/service/individuals-dividends-income-api)
 
 ### License
 
