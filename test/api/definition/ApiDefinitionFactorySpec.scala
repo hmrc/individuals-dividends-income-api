@@ -17,7 +17,8 @@
 package api.definition
 
 import api.config.Deprecation.NotDeprecated
-import api.config.{AppConfig, MockAppConfig}
+import api.config.MockAppConfig
+import api.definition.APIAccessType.PUBLIC
 import api.definition.APIStatus.{ALPHA, BETA}
 import api.mocks.MockHttpClient
 import api.routing.*
@@ -32,7 +33,7 @@ class ApiDefinitionFactorySpec extends UnitSpec {
   "buildAPIStatus" when {
     "the 'apiStatus' parameter is present and valid" should {
 
-      s"return the expected status" in new Test {
+      "return the expected status" in new Test {
         setupMockConfig(Version9)
         MockedAppConfig.apiStatus(Version9) returns "BETA"
 
@@ -43,7 +44,7 @@ class ApiDefinitionFactorySpec extends UnitSpec {
     }
 
     "the 'apiStatus' parameter is present but invalid" should {
-      s"default to alpha" in new Test {
+      "default to alpha" in new Test {
         setupMockConfig(Version9)
         MockedAppConfig.apiStatus(Version9) returns "not-a-status"
 
@@ -68,6 +69,30 @@ class ApiDefinitionFactorySpec extends UnitSpec {
         exceptionMessage shouldBe "deprecatedOn date is required for a deprecated version"
       }
     }
+
+    "set the access level" when {
+      "the controlled access flag is enabled" should {
+        "to be CONTROLLED" in new Test {
+          MockedAppConfig.endpointsEnabled(Version2) returns true
+          setupMockConfig(Version2)
+          MockedAppConfig.apiStatus(Version2) returns "BETA"
+          MockedAppConfig.controlledAccessEnabled returns true
+
+          apiDefinitionFactory.definition.api.versions.head.access shouldBe APIAccessType.CONTROLLED
+        }
+      }
+
+      "the controlled access flag is disabled" should {
+        "return PUBLIC" in new Test {
+          MockedAppConfig.endpointsEnabled(Version2) returns true
+          setupMockConfig(Version2)
+          MockedAppConfig.apiStatus(Version2) returns "BETA"
+          MockedAppConfig.controlledAccessEnabled returns false
+
+          apiDefinitionFactory.definition.api.versions.head.access shouldBe APIAccessType.PUBLIC
+        }
+      }
+    }
   }
 
   "APIVersion Json.format" should {
@@ -76,6 +101,7 @@ class ApiDefinitionFactorySpec extends UnitSpec {
       val model = APIVersion(
         version = Version2,
         status = APIStatus.BETA,
+        access = PUBLIC,
         endpointsEnabled = true
       )
 
@@ -88,20 +114,7 @@ class ApiDefinitionFactorySpec extends UnitSpec {
   trait Test extends UnitSpec with MockHttpClient with MockAppConfig {
     MockedAppConfig.apiGatewayContext returns "individuals/dividends-income"
 
-    val apiDefinitionFactory: ApiDefinitionFactory = new ApiDefinitionFactory {
-      protected val appConfig: AppConfig = mockAppConfig
-
-      val definition: Definition = Definition(
-        APIDefinition(
-          "test API definition",
-          "description",
-          "context",
-          List("category"),
-          List(APIVersion(Version2, APIStatus.BETA, endpointsEnabled = true)),
-          None)
-      )
-
-    }
+    val apiDefinitionFactory: ApiDefinitionFactory = new ApiDefinitionFactory(mockAppConfig)
 
     def checkBuildApiStatus(version: Version): APIStatus = apiDefinitionFactory.buildAPIStatus(version)
 

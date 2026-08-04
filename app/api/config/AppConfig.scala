@@ -47,6 +47,7 @@ class AppConfig @Inject() (val config: ServicesConfig, protected[config] val con
   // API Config
   def apiGatewayContext: String                    = config.getString("api.gateway.context")
   def confidenceLevelConfig: ConfidenceLevelConfig = configuration.get[ConfidenceLevelConfig](s"api.confidence-level-check")
+  def controlledAccessEnabled: Boolean             = config.getBoolean("api.controlled-access.enabled")
 
   def apiStatus(version: Version): String = config.getString(s"api.$version.status")
 

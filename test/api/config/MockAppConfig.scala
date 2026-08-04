@@ -60,6 +60,9 @@ trait MockAppConfig extends TestSuite with MockFactory {
     def confidenceLevelConfig: CallHandler0[ConfidenceLevelConfig] =
       (() => mockAppConfig.confidenceLevelConfig).expects()
 
+    def controlledAccessEnabled: CallHandler0[Boolean] =
+      (() => mockAppConfig.controlledAccessEnabled).expects()
+
     def endpointAllowsSupportingAgents(endpointName: String): CallHandler[Boolean] =
       (mockAppConfig.endpointAllowsSupportingAgents(_: String)).expects(endpointName)
 
