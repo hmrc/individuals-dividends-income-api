@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -118,12 +118,6 @@ trait ConnectorSpec extends UnitSpec with Status with MimeTypes with HeaderNames
     ) ++ intent.map("intent" -> _)
 
     protected final val config: DownstreamConfig = DownstreamConfig(this.baseUrl, environment, token, Some(allowedHeaders))
-  }
-
-  protected trait DesTest extends StandardConnectorTest {
-    val name = "des"
-
-    MockedAppConfig.desDownstreamConfig.anyNumberOfTimes() returns config
   }
 
   protected trait IfsTest extends StandardConnectorTest {
