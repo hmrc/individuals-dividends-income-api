@@ -17,7 +17,8 @@
 package v2.controllers
 
 import api.controllers.validators.Validator
-import api.controllers.validators.resolvers.{ResolveEmploymentId, ResolveNino, ResolveNonEmptyJsonObject, ResolveTaxYearMinimum}
+import api.controllers.validators.resolvers.ResolveTaxYear.ResolveDetailedTaxYear
+import api.controllers.validators.resolvers.{ResolveEmploymentId, ResolveNino, ResolveNonEmptyJsonObject}
 import api.models.domain.TaxYear
 import api.models.errors.MtdError
 import cats.data.Validated
@@ -30,7 +31,7 @@ class CreateAmendAdditionalDirectorshipDividendValidator(nino: String, taxYear: 
 
   private val resolveJson = ResolveNonEmptyJsonObject.resolver[CreateAmendAdditionalDirectorshipDividendRequestBody]
 
-  private val resolveTaxYear = ResolveTaxYearMinimum(TaxYear.fromMtd("2025-26"))
+  private val resolveTaxYear = ResolveDetailedTaxYear(minimumTaxYear = TaxYear.fromMtd("2025-26"))
 
   override def validate: Validated[Seq[MtdError], CreateAmendAdditionalDirectorshipDividendRequest] =
     (

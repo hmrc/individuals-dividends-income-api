@@ -17,7 +17,8 @@
 package v2.controllers
 
 import api.controllers.validators.Validator
-import api.controllers.validators.resolvers.{ResolveNino, ResolveNonEmptyJsonObject, ResolveTaxYearMinimum}
+import api.controllers.validators.resolvers.ResolveTaxYear.ResolveDetailedTaxYear
+import api.controllers.validators.resolvers.{ResolveNino, ResolveNonEmptyJsonObject}
 import api.models.domain.TaxYear
 import api.models.errors.MtdError
 import cats.data.Validated
@@ -33,7 +34,7 @@ class CreateAmendUkDividendsIncomeAnnualSummaryValidator(nino: String, taxYear: 
 
   private val resolveJson = ResolveNonEmptyJsonObject.resolver[CreateAmendUkDividendsIncomeAnnualSummaryBody]
 
-  private val resolveTaxYear = ResolveTaxYearMinimum(TaxYear.fromMtd("2017-18"))
+  private val resolveTaxYear = ResolveDetailedTaxYear(TaxYear.fromMtd("2017-18"))
 
   override def validate: Validated[Seq[MtdError], CreateAmendUkDividendsIncomeAnnualSummaryRequest] =
     (
