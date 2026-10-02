@@ -16,7 +16,6 @@
 
 package api.controllers.validators.resolvers
 
-import api.controllers.validators.resolvers.ResolveTaxYear.ResolveDetailedTaxYear
 import api.models.domain.TaxYear
 import api.models.errors.*
 import api.utils.UnitSpec

@@ -19,7 +19,7 @@ package v2.controllers
 import api.config.AppConfig
 import api.controllers.validators.Validator
 import api.controllers.validators.resolvers.{ResolveNino}
-import api.controllers.validators.resolvers.ResolveTaxYear.ResolveDetailedTaxYear
+import api.controllers.validators.resolvers.ResolveDetailedTaxYear
 import api.models.domain.TaxYear
 import api.models.errors.MtdError
 import cats.data.Validated
