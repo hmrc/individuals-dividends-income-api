@@ -17,7 +17,8 @@
 package v2.controllers
 
 import api.controllers.validators.Validator
-import api.controllers.validators.resolvers.{ResolveNino, ResolveTaxYearMinimum}
+import api.controllers.validators.resolvers.{ResolveNino}
+import api.controllers.validators.resolvers.ResolveDetailedTaxYear
 import api.models.domain.TaxYear
 import api.models.errors.MtdError
 import cats.data.Validated
@@ -26,7 +27,7 @@ import v2.models.request.deleteUkDividendsIncomeAnnualSummary.DeleteUkDividendsI
 
 class DeleteUkDividendsIncomeAnnualSummaryValidator(nino: String, taxYear: String) extends Validator[DeleteUkDividendsIncomeAnnualSummaryRequest] {
 
-  private val resolveTaxYear = ResolveTaxYearMinimum(TaxYear.fromMtd("2017-18"))
+  private val resolveTaxYear = ResolveDetailedTaxYear(TaxYear.fromMtd("2017-18"))
 
   override def validate: Validated[Seq[MtdError], DeleteUkDividendsIncomeAnnualSummaryRequest] =
     (

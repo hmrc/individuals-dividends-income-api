@@ -18,7 +18,8 @@ package v2.controllers
 
 import api.config.AppConfig
 import api.controllers.validators.Validator
-import api.controllers.validators.resolvers.{ResolveNino, ResolveTaxYearMinimum}
+import api.controllers.validators.resolvers.{ResolveNino}
+import api.controllers.validators.resolvers.ResolveDetailedTaxYear
 import api.models.domain.TaxYear
 import api.models.errors.MtdError
 import cats.data.Validated
@@ -30,7 +31,7 @@ import javax.inject.Inject
 class DeleteDividendsValidator @Inject(nino: String, taxYear: String) (implicit appConfig: AppConfig) extends Validator[DeleteDividendsRequest] {
 
   private lazy val minimumTaxYear = appConfig.minimumPermittedTaxYear
-  private lazy val resolveTaxYear = ResolveTaxYearMinimum(minimumTaxYear)
+  private lazy val resolveTaxYear = ResolveDetailedTaxYear(minimumTaxYear)
 
   override def validate: Validated[Seq[MtdError], DeleteDividendsRequest] =
     (

@@ -18,7 +18,8 @@ package v2.controllers
 
 import api.config.AppConfig
 import api.controllers.validators.Validator
-import api.controllers.validators.resolvers.{ResolveNino, ResolveNonEmptyJsonObject, ResolveTaxYearMinimum}
+import api.controllers.validators.resolvers.ResolveDetailedTaxYear
+import api.controllers.validators.resolvers.{ResolveNino, ResolveNonEmptyJsonObject}
 import api.models.domain.TaxYear
 import api.models.errors.MtdError
 import cats.data.Validated
@@ -34,7 +35,7 @@ class CreateAmendDividendsValidator @Inject() (nino: String, taxYear: String, bo
   private val resolveJson = ResolveNonEmptyJsonObject.resolver[CreateAmendDividendsRequestBody]
 
   private lazy val minimumTaxYear = appConfig.minimumPermittedTaxYear
-  private lazy val resolveTaxYear = ResolveTaxYearMinimum(minimumTaxYear)
+  private lazy val resolveTaxYear = ResolveDetailedTaxYear(minimumTaxYear)
 
   override def validate: Validated[Seq[MtdError], CreateAmendDividendsRequest] =
     (
