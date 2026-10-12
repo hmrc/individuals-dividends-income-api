@@ -18,10 +18,9 @@ package v2.controllers
 
 import api.controllers.validators.RulesValidator
 import api.controllers.validators.resolvers.{ResolveParsedCountryCode, ResolveParsedNumber, ResolveStringPattern}
-import api.models.errors.MtdError
+import api.models.errors.{CustomerRefFormatError, MtdError}
 import cats.data.Validated
 import cats.implicits.toTraverseOps
-import common.errors.CustomerRefFormatError
 import v2.models.request.createAmendDividends.*
 
 object CreateAmendDividendsRulesValidator extends RulesValidator[CreateAmendDividendsRequest] {

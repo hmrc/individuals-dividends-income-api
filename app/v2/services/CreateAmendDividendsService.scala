@@ -20,7 +20,6 @@ import api.controllers.RequestContext
 import api.models.errors.*
 import api.services.{BaseService, ServiceOutcome}
 import cats.implicits.*
-import common.errors.RuleOutsideAmendmentWindowError
 import v2.connectors.CreateAmendDividendsConnector
 import v2.models.request.createAmendDividends.CreateAmendDividendsRequest
 
