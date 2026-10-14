@@ -47,6 +47,11 @@ object CompanyNumberFormatError extends MtdError("FORMAT_COMPANY_NUMBER", "The c
 object DirectorshipCeasedDateFormatError
     extends MtdError("FORMAT_DIRECTORSHIP_CEASED_DATE", "The directorship ceased date format is invalid", BAD_REQUEST)
 
+//Dividends Errors
+object CustomerRefFormatError extends MtdError("FORMAT_CUSTOMER_REF", "The provided customer reference is invalid", BAD_REQUEST)
+
+object RuleOutsideAmendmentWindowError extends MtdError("RULE_OUTSIDE_AMENDMENT_WINDOW", "You are outside the amendment window", BAD_REQUEST)
+
 //Standard Errors
 object NotFoundError extends MtdError("MATCHING_RESOURCE_NOT_FOUND", "Matching resource not found", NOT_FOUND)
 
