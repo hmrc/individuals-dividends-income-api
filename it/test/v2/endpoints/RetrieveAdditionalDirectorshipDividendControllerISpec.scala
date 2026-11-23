@@ -23,7 +23,7 @@ import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.libs.json.Json
 import play.api.libs.ws.{WSRequest, WSResponse}
 import play.api.test.Helpers.*
-import v2.fixtures.RetrieveAdditionalDirectorshipDividendFixtures.responseJson
+import v2.retrieveAdditionalDirectorshipDividend.fixtures.RetrieveAdditionalDirectorshipDividendFixtures.responseJson
 
 class RetrieveAdditionalDirectorshipDividendControllerISpec extends IntegrationBaseSpec {
 

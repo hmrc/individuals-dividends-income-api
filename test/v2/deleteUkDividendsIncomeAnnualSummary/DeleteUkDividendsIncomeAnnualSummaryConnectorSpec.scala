@@ -1,0 +1,107 @@
+/*
+ * Copyright 2026 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package v2.deleteUkDividendsIncomeAnnualSummary
+
+import api.connectors.ConnectorSpec
+import api.models.domain.{Nino, TaxYear}
+import api.models.outcomes.ResponseWrapper
+import play.api.Configuration
+import play.api.libs.json.Json
+import uk.gov.hmrc.http.StringContextOps
+import v2.deleteUkDividendsIncomeAnnualSummary.model.request.DeleteUkDividendsIncomeAnnualSummaryRequest
+
+import scala.concurrent.Future
+
+class DeleteUkDividendsIncomeAnnualSummaryConnectorSpec extends ConnectorSpec {
+
+  "DeleteUkDividendsIncomeAnnualSummaryConnector" should {
+    "return the expected response for a non-TYS request" when {
+      "a valid request is made and `isPassDeleteIntentEnabled` feature switch is on" in new IfsTest with Test {
+        def taxYear: TaxYear = TaxYear.fromMtd("2019-20")
+
+        val outcome: Right[Nothing, ResponseWrapper[Unit]] = Right(ResponseWrapper(correlationId, ()))
+
+        willPost(
+          url = url"$baseUrl/income-tax/nino/$nino/income-source/dividends/annual/${taxYear.asDownstream}",
+          body = Json.parse("""{}""")
+        ).returns(Future.successful(outcome))
+
+        MockedAppConfig.featureSwitchConfig
+          .anyNumberOfTimes()
+          .returns(
+            Configuration(
+              "passDeleteIntentHeader.enabled" -> "true"
+            ))
+
+        await(connector.delete(request)) shouldBe outcome
+      }
+
+      "a valid request is made and `isPassDeleteIntentEnabled` feature switch is off" in new IfsTest with Test {
+
+        def taxYear: TaxYear                               = TaxYear.fromMtd("2019-20")
+        val outcome: Right[Nothing, ResponseWrapper[Unit]] = Right(ResponseWrapper(correlationId, ()))
+
+        willPost(
+          url = url"$baseUrl/income-tax/nino/$nino/income-source/dividends/annual/${taxYear.asDownstream}",
+          body = Json.parse("""{}""")
+        ).returns(Future.successful(outcome))
+
+        MockedAppConfig.featureSwitchConfig
+          .anyNumberOfTimes()
+          .returns(
+            Configuration(
+              "passDeleteIntentHeader.enabled" -> "false"
+            ))
+
+        await(connector.delete(request)) shouldBe outcome
+      }
+    }
+    "return the expected response for a TYS request" when {
+      "a valid request is made" in new IfsTest with Test {
+        def taxYear: TaxYear                               = TaxYear.fromMtd("2023-24")
+        val outcome: Right[Nothing, ResponseWrapper[Unit]] = Right(ResponseWrapper(correlationId, ()))
+
+        willDelete(url = url"$baseUrl/income-tax/${taxYear.asTysDownstream}/$nino/income-source/dividends/annual")
+          .returns(Future.successful(outcome))
+
+        MockedAppConfig.featureSwitchConfig
+          .anyNumberOfTimes()
+          .returns(
+            Configuration(
+              "passDeleteIntentHeader.enabled" -> "false"
+            ))
+
+        await(connector.delete(request)) shouldBe outcome
+      }
+    }
+  }
+
+  trait Test { self: ConnectorTest =>
+
+    def taxYear: TaxYear
+    val nino: String = "AA123456A"
+
+    val request: DeleteUkDividendsIncomeAnnualSummaryRequest = DeleteUkDividendsIncomeAnnualSummaryRequest(Nino(nino), taxYear)
+
+    val connector: DeleteUkDividendsIncomeAnnualSummaryConnector = new DeleteUkDividendsIncomeAnnualSummaryConnector(
+      http = mockHttpClient,
+      appConfig = mockAppConfig
+    )
+
+  }
+
+}

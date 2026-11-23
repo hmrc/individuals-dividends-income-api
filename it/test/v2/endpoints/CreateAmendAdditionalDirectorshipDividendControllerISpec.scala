@@ -26,7 +26,7 @@ import play.api.libs.ws.DefaultBodyReadables.readableAsString
 import play.api.libs.ws.JsonBodyWritables.writeableOf_JsValue
 import play.api.libs.ws.{WSRequest, WSResponse}
 import play.api.test.Helpers.*
-import v2.fixtures.CreateAmendAdditionalDirectorshipDividendFixtures.{validFullRequestBodyJson, validMinimumRequestBodyJson}
+import v2.createAmendAdditionalDirectorshipDividend.fixtures.CreateAmendAdditionalDirectorshipDividendFixtures.{validFullRequestBodyJson, validMinimumRequestBodyJson}
 
 class CreateAmendAdditionalDirectorshipDividendControllerISpec extends IntegrationBaseSpec with JsonErrorValidators {
 
