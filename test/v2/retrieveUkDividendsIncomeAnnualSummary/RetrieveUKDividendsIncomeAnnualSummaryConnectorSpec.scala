@@ -1,0 +1,86 @@
+/*
+ * Copyright 2026 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package v2.retrieveUkDividendsIncomeAnnualSummary
+
+import api.connectors.ConnectorSpec
+import api.models.domain.{Nino, TaxYear}
+import api.models.outcomes.ResponseWrapper
+import uk.gov.hmrc.http.StringContextOps
+import v2.retrieveUkDividendsIncomeAnnualSummary.model.request.RetrieveUkDividendsIncomeAnnualSummaryRequest
+import v2.retrieveUkDividendsIncomeAnnualSummary.model.response.RetrieveUkDividendsAnnualIncomeSummaryResponse
+
+import scala.concurrent.Future
+
+class RetrieveUKDividendsIncomeAnnualSummaryConnectorSpec extends ConnectorSpec {
+
+  val nino: String              = "AA111111A"
+  val taxYearMtd: String        = "2018-19"
+  val taxYearDownstream: String = "2019"
+  val tysTaxYear: String        = "2023"
+
+  private val validResponse = RetrieveUkDividendsAnnualIncomeSummaryResponse(
+    ukDividends = Some(10.12),
+    otherUkDividends = Some(11.12)
+  )
+
+  "RetrieveUkDividendsIncomeAnnualSummaryConnectorSpec for a non-TYS request" when {
+    "retrieveUKDividendsIncomeAnnualSummary is called" must {
+      "return a 200 for success scenario" in {
+        new IfsTest with Test {
+          def taxYear: TaxYear = TaxYear.fromMtd("2018-19")
+
+          val outcome: Right[Nothing, ResponseWrapper[RetrieveUkDividendsAnnualIncomeSummaryResponse]] =
+            Right(ResponseWrapper(correlationId, validResponse))
+
+          willGet(url"$baseUrl/income-tax/nino/$nino/income-source/dividends/annual/$taxYearDownstream")
+            .returns(Future.successful(outcome))
+
+          await(connector.retrieveUKDividendsIncomeAnnualSummary(request)) shouldBe outcome
+
+        }
+      }
+    }
+
+    "retrieveUkDividendsIncomeAnnualSummary is called for a TaxYearSpecific tax year" must {
+      "return a 200 for success scenario" in {
+        new IfsTest with Test {
+          def taxYear: TaxYear = TaxYear.fromMtd("2023-24")
+
+          val outcome: Right[Nothing, ResponseWrapper[RetrieveUkDividendsAnnualIncomeSummaryResponse]] =
+            Right(ResponseWrapper(correlationId, validResponse))
+
+          willGet(url"$baseUrl/income-tax/${taxYear.asTysDownstream}/$nino/income-source/dividends/annual")
+            .returns(Future.successful(outcome))
+
+          await(connector.retrieveUKDividendsIncomeAnnualSummary(request)) shouldBe outcome
+        }
+      }
+    }
+  }
+
+  trait Test { self: ConnectorTest =>
+    def taxYear: TaxYear
+
+    protected val connector: RetrieveUKDividendsIncomeAnnualSummaryConnector =
+      new RetrieveUKDividendsIncomeAnnualSummaryConnector(http = mockHttpClient, appConfig = mockAppConfig)
+
+    protected val request: RetrieveUkDividendsIncomeAnnualSummaryRequest =
+      RetrieveUkDividendsIncomeAnnualSummaryRequest(Nino("AA111111A"), taxYear = taxYear)
+
+  }
+
+}
