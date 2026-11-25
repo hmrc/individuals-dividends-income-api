@@ -24,7 +24,6 @@ import play.api.Configuration
 import play.api.mvc.Result
 import v2.retrieveDividends.model.request.RetrieveDividendsRequest
 import v2.retrieveDividends.RetrieveDividendsFixtures.responseModel
-import v2.retrieveDividends.mocks.{MockRetrieveDividendsService, MockRetrieveDividendsValidatorFactory}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future

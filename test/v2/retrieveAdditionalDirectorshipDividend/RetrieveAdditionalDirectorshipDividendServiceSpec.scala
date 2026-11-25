@@ -21,8 +21,7 @@ import api.models.errors.*
 import api.models.outcomes.ResponseWrapper
 import api.services.{ServiceOutcome, ServiceSpec}
 import v2.retrieveAdditionalDirectorshipDividend.model.response.RetrieveAdditionalDirectorshipDividendResponse
-import v2.retrieveAdditionalDirectorshipDividend.fixtures.RetrieveAdditionalDirectorshipDividendFixtures.*
-import v2.retrieveAdditionalDirectorshipDividend.mocks.MockRetrieveAdditionalDirectorshipDividendConnector
+import RetrieveAdditionalDirectorshipDividendFixtures.*
 import v2.retrieveAdditionalDirectorshipDividend.model.request.RetrieveAdditionalDirectorshipDividendRequest
 
 import scala.concurrent.Future

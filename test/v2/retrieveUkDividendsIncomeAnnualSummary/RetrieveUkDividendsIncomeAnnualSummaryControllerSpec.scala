@@ -23,10 +23,6 @@ import api.models.outcomes.ResponseWrapper
 import play.api.Configuration
 import play.api.libs.json.Json
 import play.api.mvc.Result
-import v2.retrieveUkDividendsIncomeAnnualSummary.mocks.{
-  MockRetrieveUkDividendsAnnualIncomeSummaryService,
-  MockRetrieveUkDividendsIncomeAnnualSummaryValidatorFactory
-}
 import v2.retrieveUkDividendsIncomeAnnualSummary.model.request.RetrieveUkDividendsIncomeAnnualSummaryRequest
 import v2.retrieveUkDividendsIncomeAnnualSummary.model.response.RetrieveUkDividendsAnnualIncomeSummaryResponse
 

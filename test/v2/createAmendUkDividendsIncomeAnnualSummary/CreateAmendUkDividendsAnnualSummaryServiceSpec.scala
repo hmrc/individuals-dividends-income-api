@@ -21,7 +21,6 @@ import api.models.domain.{Nino, TaxYear}
 import api.models.errors.*
 import api.models.outcomes.ResponseWrapper
 import api.services.ServiceSpec
-import v2.createAmendUkDividendsIncomeAnnualSummary.mocks.MockCreateAmendUkDividendsAnnualSummaryConnector
 import v2.createAmendUkDividendsIncomeAnnualSummary.model.request.{
   CreateAmendUkDividendsIncomeAnnualSummaryBody,
   CreateAmendUkDividendsIncomeAnnualSummaryRequest

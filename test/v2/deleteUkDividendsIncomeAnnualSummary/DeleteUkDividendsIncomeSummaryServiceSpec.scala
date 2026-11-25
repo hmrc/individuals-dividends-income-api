@@ -22,7 +22,6 @@ import api.models.errors.*
 import api.models.outcomes.ResponseWrapper
 import api.utils.UnitSpec
 import uk.gov.hmrc.http.HeaderCarrier
-import v2.deleteUkDividendsIncomeAnnualSummary.mocks.MockDeleteUkDividendsIncomeAnnualSummaryConnector
 import v2.deleteUkDividendsIncomeAnnualSummary.model.request.DeleteUkDividendsIncomeAnnualSummaryRequest
 
 import scala.concurrent.ExecutionContext.Implicits.global

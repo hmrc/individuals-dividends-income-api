@@ -18,7 +18,7 @@ package v2.retrieveAdditionalDirectorshipDividend.model.response
 
 import api.utils.UnitSpec
 import play.api.libs.json.{JsError, JsObject, Json}
-import v2.retrieveAdditionalDirectorshipDividend.fixtures.RetrieveAdditionalDirectorshipDividendFixtures.*
+import v2.retrieveAdditionalDirectorshipDividend.RetrieveAdditionalDirectorshipDividendFixtures.*
 
 class RetrieveAdditionalDirectorshipDividendResponseSpec extends UnitSpec {
 

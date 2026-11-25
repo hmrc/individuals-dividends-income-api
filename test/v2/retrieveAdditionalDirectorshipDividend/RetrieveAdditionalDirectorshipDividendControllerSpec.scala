@@ -22,11 +22,7 @@ import api.models.errors.*
 import api.models.outcomes.ResponseWrapper
 import play.api.Configuration
 import play.api.mvc.Result
-import v2.retrieveAdditionalDirectorshipDividend.fixtures.RetrieveAdditionalDirectorshipDividendFixtures.*
-import v2.retrieveAdditionalDirectorshipDividend.mocks.{
-  MockRetrieveAdditionalDirectorshipDividendService,
-  MockRetrieveAdditionalDirectorshipDividendValidatorFactory
-}
+import RetrieveAdditionalDirectorshipDividendFixtures.*
 import v2.retrieveAdditionalDirectorshipDividend.model.request.RetrieveAdditionalDirectorshipDividendRequest
 
 import scala.concurrent.ExecutionContext.Implicits.global

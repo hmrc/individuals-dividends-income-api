@@ -18,10 +18,7 @@ package v2.createAmendAdditionalDirectorshipDividend.model.request
 
 import api.utils.UnitSpec
 import play.api.libs.json.{JsError, JsObject, Json}
-import v2.createAmendAdditionalDirectorshipDividend.fixtures.CreateAmendAdditionalDirectorshipDividendFixtures.{
-  fullRequestBodyModel,
-  validFullRequestBodyJson
-}
+import v2.createAmendAdditionalDirectorshipDividend.CreateAmendAdditionalDirectorshipDividendFixtures.{fullRequestBodyModel, validFullRequestBodyJson}
 
 class CreateAmendAdditionalDirectorshipDividendRequestBodySpec extends UnitSpec {
 

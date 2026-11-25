@@ -21,7 +21,6 @@ import api.models.domain.{Nino, TaxYear}
 import api.models.errors.*
 import api.models.outcomes.ResponseWrapper
 import api.services.ServiceSpec
-import v2.deleteDividends.mocks.MockDeleteDividendsConnector
 import v2.deleteDividends.model.request.DeleteDividendsRequest
 
 import scala.concurrent.Future
