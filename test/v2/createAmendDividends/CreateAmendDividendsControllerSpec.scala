@@ -27,7 +27,6 @@ import api.utils.MockIdGenerator
 import play.api.Configuration
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.Result
-import v2.createAmendDividends.mocks.{MockCreateAmendDividendsService, MockCreateAmendDividendsValidatorFactory}
 import v2.createAmendDividends.model.request.*
 
 import scala.concurrent.ExecutionContext.Implicits.global

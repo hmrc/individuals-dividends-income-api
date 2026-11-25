@@ -26,10 +26,6 @@ import api.models.outcomes.ResponseWrapper
 import play.api.Configuration
 import play.api.libs.json.{JsObject, JsValue}
 import play.api.mvc.Result
-import v2.createAmendUkDividendsIncomeAnnualSummary.mocks.{
-  MockCreateAmendUkDividendsAnnualSummaryService,
-  MockCreateAmendUkDividendsAnnualSummaryValidatorFactory
-}
 import v2.createAmendUkDividendsIncomeAnnualSummary.model.request.*
 
 import scala.concurrent.ExecutionContext.Implicits.global

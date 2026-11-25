@@ -24,14 +24,7 @@ import api.models.outcomes.ResponseWrapper
 import play.api.Configuration
 import play.api.libs.json.JsValue
 import play.api.mvc.Result
-import v2.createAmendAdditionalDirectorshipDividend.fixtures.CreateAmendAdditionalDirectorshipDividendFixtures.{
-  fullRequestBodyModel,
-  validFullRequestBodyJson
-}
-import v2.createAmendAdditionalDirectorshipDividend.mocks.{
-  MockCreateAmendAdditionalDirectorshipDividendService,
-  MockCreateAmendAdditionalDirectorshipDividendValidatorFactory
-}
+import CreateAmendAdditionalDirectorshipDividendFixtures.{fullRequestBodyModel, validFullRequestBodyJson}
 import v2.createAmendAdditionalDirectorshipDividend.model.request.CreateAmendAdditionalDirectorshipDividendRequest
 
 import scala.concurrent.ExecutionContext.Implicits.global

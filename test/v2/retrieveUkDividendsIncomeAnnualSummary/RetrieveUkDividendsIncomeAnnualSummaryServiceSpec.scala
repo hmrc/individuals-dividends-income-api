@@ -21,7 +21,6 @@ import api.models.domain.{Nino, TaxYear}
 import api.models.errors.*
 import api.models.outcomes.ResponseWrapper
 import api.services.ServiceSpec
-import v2.retrieveUkDividendsIncomeAnnualSummary.mocks.MockRetrieveUKDividendsIncomeAnnualSummaryConnector
 import v2.retrieveUkDividendsIncomeAnnualSummary.model.request.RetrieveUkDividendsIncomeAnnualSummaryRequest
 import v2.retrieveUkDividendsIncomeAnnualSummary.model.response.RetrieveUkDividendsAnnualIncomeSummaryResponse
 

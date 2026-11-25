@@ -21,7 +21,6 @@ import api.models.domain.{Nino, TaxYear}
 import api.models.errors.*
 import api.models.outcomes.ResponseWrapper
 import api.services.ServiceSpec
-import v2.createAmendDividends.mocks.MockCreateAmendDividendsConnector
 import v2.createAmendDividends.model.request.{CreateAmendDividendsRequest, CreateAmendDividendsRequestBody}
 
 import scala.concurrent.Future

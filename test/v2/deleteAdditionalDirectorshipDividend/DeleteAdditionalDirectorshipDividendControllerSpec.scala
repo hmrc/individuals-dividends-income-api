@@ -25,10 +25,6 @@ import play.api.Configuration
 import play.api.libs.json.JsValue
 import play.api.mvc.Result
 import v2.deleteAdditionalDirectorshipDividend.model.request.DeleteAdditionalDirectorshipDividendRequest
-import v2.deleteAdditionalDirectorshipDividend.mocks.{
-  MockDeleteAdditionalDirectorshipDividendService,
-  MockDeleteAdditionalDirectorshipDividendValidatorFactory
-}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future

@@ -20,7 +20,6 @@ import api.models.domain.{EmploymentId, Nino, TaxYear}
 import api.models.errors.*
 import api.models.outcomes.ResponseWrapper
 import api.services.{ServiceOutcome, ServiceSpec}
-import v2.deleteAdditionalDirectorshipDividend.mocks.MockDeleteAdditionalDirectorshipDividendConnector
 import v2.deleteAdditionalDirectorshipDividend.model.request.DeleteAdditionalDirectorshipDividendRequest
 
 import scala.concurrent.Future

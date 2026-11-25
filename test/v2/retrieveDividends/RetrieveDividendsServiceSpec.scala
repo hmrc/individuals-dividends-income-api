@@ -25,7 +25,6 @@ import uk.gov.hmrc.http.HeaderCarrier
 import RetrieveDividendsFixtures.responseModel
 import v2.retrieveDividends.model.response.RetrieveDividendsResponse
 import v2.retrieveDividends.model.request.RetrieveDividendsRequest
-import v2.retrieveDividends.mocks.MockRetrieveDividendsConnector
 
 import scala.concurrent.Future
 

@@ -21,7 +21,7 @@ import api.models.domain.{EmploymentId, Nino, TaxYear}
 import api.models.errors.{DownstreamErrorCode, DownstreamErrors}
 import api.models.outcomes.ResponseWrapper
 import uk.gov.hmrc.http.StringContextOps
-import v2.retrieveAdditionalDirectorshipDividend.fixtures.RetrieveAdditionalDirectorshipDividendFixtures.*
+import RetrieveAdditionalDirectorshipDividendFixtures.*
 import v2.retrieveAdditionalDirectorshipDividend.model.response.RetrieveAdditionalDirectorshipDividendResponse
 import v2.retrieveAdditionalDirectorshipDividend.model.request.RetrieveAdditionalDirectorshipDividendRequest
 

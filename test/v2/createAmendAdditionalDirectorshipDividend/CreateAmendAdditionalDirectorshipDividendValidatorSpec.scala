@@ -21,7 +21,7 @@ import api.models.errors.*
 import api.models.utils.JsonErrorValidators
 import api.utils.UnitSpec
 import play.api.libs.json.*
-import v2.createAmendAdditionalDirectorshipDividend.fixtures.CreateAmendAdditionalDirectorshipDividendFixtures.*
+import CreateAmendAdditionalDirectorshipDividendFixtures.*
 import v2.createAmendAdditionalDirectorshipDividend.model.request.CreateAmendAdditionalDirectorshipDividendRequest
 
 class CreateAmendAdditionalDirectorshipDividendValidatorSpec extends UnitSpec with JsonErrorValidators {

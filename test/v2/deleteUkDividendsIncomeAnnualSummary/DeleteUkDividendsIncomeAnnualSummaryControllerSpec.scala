@@ -26,10 +26,6 @@ import api.models.outcomes.ResponseWrapper
 import play.api.Configuration
 import play.api.libs.json.JsValue
 import play.api.mvc.Result
-import v2.deleteUkDividendsIncomeAnnualSummary.mocks.{
-  MockDeleteUkDividendsIncomeAnnualSummaryService,
-  MockDeleteUkDividendsIncomeAnnualSummaryValidatorFactory
-}
 import v2.deleteUkDividendsIncomeAnnualSummary.model.request.DeleteUkDividendsIncomeAnnualSummaryRequest
 
 import scala.concurrent.ExecutionContext.Implicits.global

@@ -27,7 +27,6 @@ import api.utils.MockIdGenerator
 import play.api.Configuration
 import play.api.libs.json.JsValue
 import play.api.mvc.Result
-import v2.deleteDividends.mocks.{MockDeleteDividendsService, MockDeleteDividendsValidatorFactory}
 import v2.deleteDividends.model.request.DeleteDividendsRequest
 
 import scala.concurrent.ExecutionContext.Implicits.global

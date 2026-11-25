@@ -20,8 +20,7 @@ import api.models.domain.{EmploymentId, Nino, TaxYear}
 import api.models.errors.*
 import api.models.outcomes.ResponseWrapper
 import api.services.{ServiceOutcome, ServiceSpec}
-import v2.createAmendAdditionalDirectorshipDividend.fixtures.CreateAmendAdditionalDirectorshipDividendFixtures.minimumRequestBodyModel
-import v2.createAmendAdditionalDirectorshipDividend.mocks.MockCreateAmendAdditionalDirectorshipDividendConnector
+import CreateAmendAdditionalDirectorshipDividendFixtures.minimumRequestBodyModel
 import v2.createAmendAdditionalDirectorshipDividend.model.request.*
 
 import scala.concurrent.Future
